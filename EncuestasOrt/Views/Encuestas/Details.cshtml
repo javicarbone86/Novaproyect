@@ -1,0 +1,119 @@
+﻿@model EncuestasOrt.Models.DatosEncuesta
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<link href="@Url.Content("~/Content/MiTemplate/css/Background.css")" rel="stylesheet" type="text/css" />
+
+<h2>Detalles de la encuesta</h2>
+
+<br />
+
+
+<a class="btn btn-success pull-right" href="@Url.Action("Index")">
+    <i class="icon-plus icon-plus glyphicon glyphicon-plus-back"></i> Volver al listado
+</a>
+
+
+<br />
+
+<div class="form-horizontal">
+    <fieldset>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.Id, "Número", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.encuesta.Id, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.Descripcion, "Titulo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.encuesta.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.FechaHora, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.encuesta.FechaHora, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.ClaveAcceso, "Clave de acceso", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.encuesta.ClaveAcceso, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.Estado, "Activo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.encuesta.Estado, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.EsTemplate, "Es plantilla", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.encuesta.EsTemplate, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </fieldset>
+
+
+</div>
+
+
+<div class="container">
+    <h3>Preguntas</h3>
+
+    @foreach (var preg in Model.preguntas)
+    {
+        <div class="panel-group" id="accordion-preg-@preg.Id">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion-preg-@preg.Id" href="#@preg.Id">@preg.Descripcion</a>
+                    </h4>
+                </div>
+                <div id="@preg.Id" class="panel-collapses">
+                    <div class="panel-body">
+
+                        @foreach (var opt in preg.Opcion)
+                        {
+                            <div class="col-md-4">
+
+                                @if (preg.Tipo == "radio")
+                                {
+                                    <input type="radio" name="preg-@opt.Id" value="@opt.valor" disabled> @opt.valor
+
+                                }
+                                @if (preg.Tipo == "check")
+                                {
+                                    <input type="checkbox" name="preg-@opt.Id" value="@opt.valor" disabled>@opt.valor
+
+                                }
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+</div>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

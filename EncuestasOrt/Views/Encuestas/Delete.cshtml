@@ -1,0 +1,99 @@
+﻿@model EncuestasOrt.Encuesta
+
+@{
+    ViewBag.Title = "Borrar encuesta";
+}
+
+<link href="@Url.Content("~/Content/MiTemplate/css/Background.css")" rel="stylesheet" type="text/css" />
+
+<h2>Borrar encuesta</h2>
+
+<h3>¿Seguro que desea borrar esta encuesta?</h3>
+
+<div>
+    <hr />
+
+    <div class="form-horizontal">
+        <fieldset>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Id, "Número", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Descripcion, "Titulo", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FechaHora, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.FechaHora, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ClaveAcceso, "Clave de acceso", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.ClaveAcceso, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Estado, "Activo", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EsTemplate, "Es plantilla", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.EsTemplate, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-danger" />
+            <input type="button" value="Cancelar" class="btn btn-default" id="cancelDelete" /> 
+            
+        </div>
+    }
+
+
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            // Cancelar
+            $('#cancelDelete').click(function () {
+                parent.history.back();
+                return false;
+            });
+            
+
+        });
+    </script>
+
+
+
+
+
+}

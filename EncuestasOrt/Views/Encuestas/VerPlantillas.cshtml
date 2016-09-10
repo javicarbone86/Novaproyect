@@ -1,0 +1,170 @@
+﻿@model PagedList.IPagedList<EncuestasOrt.Models.DatosEncuesta>
+@using PagedList.Mvc;
+
+<style>
+    .dropdown.dropdown-lg .dropdown-menu {
+        margin-top: -1px;
+        padding: 6px 20px;
+    }
+
+    .input-group-btn .btn-group {
+        display: flex !important;
+    }
+
+    .btn-group .btn {
+        border-radius: 0;
+        margin-left: -1px;
+    }
+
+        .btn-group .btn:last-child {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+    .btn-group .form-horizontal .btn[type="submit"] {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .form-horizontal .form-group {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .form-group .form-control:last-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+</style>
+
+@Styles.Render("~/Styles/Animacion.css")
+
+<h2>Plantillas disponibles</h2>
+
+
+
+<div class="row">
+    <div id="custom-search-input">
+        <div class="input-group col-md-12">
+            @using (Html.BeginForm("VerPlantillas", "Encuestas", FormMethod.Get))
+            {
+                <input type="text" class="search-query form-control" name="BuscDesc" placeholder="Buscar.." />
+                <span class="input-group-btn">
+                    <button class="btn btn-danger" type="submit">
+                        <span class=" glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            }
+        </div>
+    </div>
+</div>
+
+<br />
+
+
+
+
+
+<div class="container">
+    <!-- -->
+    @foreach (var item in Model)
+    {
+        <div class="panel-group" id="accordion-@item.encuesta.Id">
+
+            <div class="panel panel-default animated zoomIn">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion-@item.encuesta.Id" href="#@item.encuesta.Id"><i class="glyphicon glyphicon-plus"></i>@item.encuesta.Descripcion</a>
+
+                    </h4>
+                    <div class="btn-group pull-right">
+                        <a href="@Url.Action("CreateFromTemplate", "Encuestas", new { @id = @item.encuesta.Id })" class="btn btn--green btn-sm">Utilizar Plantilla</a>
+                    </div>
+
+                </div>
+                <div id="@item.encuesta.Id" class="panel-collapse collapse">
+                    <div class="panel-body">
+
+                        @foreach (var preg in item.preguntas)
+                        {
+
+                            <div class="panel-group" id="accordion-preg-@preg.Id">
+
+                                <div class="panel panel-primary animated zoomIn">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion-preg-@preg.Id" href="#@preg.Id">@preg.Descripcion</a>
+                                        </h4>
+                                    </div>
+                                    <div id="@preg.Descripcion" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+
+                                            @foreach (var opt in preg.Opcion)
+                                            {
+
+                                                if (preg.Tipo == "radio")
+                                                {
+                                                    <input type="radio" name="preg-@opt.Id" value="@opt.valor" disabled> @opt.valor
+
+                                                }
+                                                if (preg.Tipo == "check")
+                                                {
+                                                    <input type="checkbox" name="preg-@opt.Id" value="@opt.valor" disabled>@opt.valor
+
+                                                }
+                                                    <br />
+                                            }
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    }
+
+
+</div>
+
+ Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("VerPlantillas", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+
+            $(function () {
+
+                function toggleChevron(e) {
+                    $(e.target)
+                            .prev('.panel-heading')
+                            .find("i")
+                            .toggleClass('rotate-icon');
+                    $('.panel-body.animated').toggleClass('zoomIn zoomOut');
+                }
+
+                $('#accordion').on('hide.bs.collapse', toggleChevron);
+                $('#accordion').on('show.bs.collapse', toggleChevron);
+            })
+
+
+
+
+        });
+
+    </script>
+}

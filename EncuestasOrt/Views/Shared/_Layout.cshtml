@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title Encuestas ORT Argentina</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/toastr.css")
+    @Styles.Render("~/Styles/sweetalert.css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Scripts/jquery-ui-1.11.4.js")
+    @Scripts.Render("~/Scripts/DatePickerReady.js")
+    @Scripts.Render("~/Scripts/toastr.js")
+    @Scripts.Render("~/Scripts/sweetalert-dev.js")
+    @Scripts.Render("~/Scripts/chosen.jquery.min.js")
+    @Styles.Render("~/Content/chosen.css")
+
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+
+
+
+    @RenderSection("scripts", required: false)
+
+    @Styles.Render("~/Styles/SideBar.css")
+
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @Html.Partial("_MenuPartial")
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+
+    </div>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Sistema de encuestas ORT</p>
+    </footer>
+
+    @Html.Partial("_FlashPartial")
+</body>
+</html>

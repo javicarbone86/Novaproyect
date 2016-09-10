@@ -1,0 +1,354 @@
+﻿@model EncuestasOrt.Models.CrearEncuestaModel
+
+<style>.wizard .content {
+    min-height: 100px;
+}
+.wizard .content > .body {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    position: relative;
+}
+    
+    </style>
+
+<header>
+    <h1>Crear Encuestas en 3 simples pasos.</h1>
+
+</header>
+
+<div class="content">
+    <div id="wizard">
+        <h2>Configuración de la Encuesta</h2>
+        <section>
+            <form id="formDatos">
+                <div class="form-group col-xs-10">
+                    @Html.LabelFor(model => model.encuesta.MateriaID, "Materia", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 ">
+                        @Html.DropDownListFor(model => model.encuesta.MateriaID, Model.materias, htmlAttributes: new { @class = "chosen-select-single", style = "width:200px;", @id = "Materia" })
+                        @Html.ValidationMessageFor(model => model.encuesta.MateriaID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-10">
+                    @Html.LabelFor(model => model.encuesta.Curso, "Curso", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.encuesta.Curso, Model.cursos, htmlAttributes: new { @class = "chosen-select-single", style = "width:200px;", @id = "Curso" })
+                        @Html.ValidationMessageFor(model => model.encuesta.Curso, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @Html.HiddenFor(model => model.encuesta.UsuarioID)
+
+                @Html.HiddenFor(model => model.encuesta.TemplateID)
+
+                <div class="form-group col-xs-10">
+                    @Html.LabelFor(model => model.encuesta.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.encuesta.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.encuesta.Descripcion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-10">
+                    @Html.LabelFor(model => model.encuesta.ClaveAcceso, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.encuesta.ClaveAcceso, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.encuesta.ClaveAcceso, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group col-xs-10">
+                    @Html.LabelFor(model => model.encuesta.EsTemplate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.encuesta.EsTemplate)
+                            @Html.ValidationMessageFor(model => model.encuesta.EsTemplate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-xs-10">
+                    @Html.LabelFor(model => model.encuesta.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.encuesta.Estado)
+                            @Html.ValidationMessageFor(model => model.encuesta.Estado, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <h2>Second Step</h2>
+
+        <section>
+
+            <div class="container fill">
+                <h2>Preguntas asignadas a la encuesta</h2>
+                <br />
+                <p>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input type="text" id="search" class="form-control" placeholder="Buscar...">
+                                <span class="input-group-btn">
+                                    <button type="button" id="btnSearch" class="btn btn-default">Ir!</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <a class="btn btn-success pull-right" href="@Url.Action("Index")">
+                                <i class="glyphicon glyphicon-arrow-left"></i> Volver al listado
+                            </a>
+                        </div>
+                    </div>
+                    <br />
+                    <table id="grid" data-source="@Url.Action("GetPreguntasAsignadas", "Preguntas", new { @id = ViewBag.idEncuesta })"></table>
+            </div>
+
+            <div class="container fill">
+                <h3>Banco de preguntas</h3>
+                <br />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" id="search2" class="form-control" placeholder="Buscar...">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnSearch2" class="btn btn-default">Ir!</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+
+                    </div>
+                </div>
+                <br />
+                <table id="grid2" data-source="@Url.Action("GetPreguntasSinAsignar", "Preguntas", new { @id = 17 })"></table>
+
+            </div>
+
+
+
+
+            <div class="modal fade" id="PreguntasModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Pregunta</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </section>
+
+        <h2>Third Step</h2>
+        <section>
+            <p>
+                paso 3
+            </p>
+        </section>
+
+
+    </div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/Grid")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <link href="~/Content/Wizard/normalize.css" rel="stylesheet" />
+    <link href="~/Content/Wizard/main.css" rel="stylesheet" />
+    <script src="~/Content/Wizard/jquery.cookie-1.3.1.js"></script>
+    <script src="~/Content/Wizard/modernizr-2.6.2.min.js"></script>
+    <link href="~/Content/Wizard/jquery.steps.css" rel="stylesheet" />
+    <link href="~/Content/chosen.css" rel="stylesheet" />
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script src="~/Content/Wizard/jquery.steps.js"></script>
+    <link href="~/Content/Grid/grid-0.4.3.min.css" rel="stylesheet" type="text/css">
+    
+    <script type="text/javascript">
+        $(function () {
+
+
+            $("#wizard").steps({
+                headerTag: "h2",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                onStepChanging: function (tab, navigation, index) {
+                            
+
+                    var form = $("#formDatos");
+                    form.validate();
+                    if (form.valid()) {
+                        return true;
+                    } else {
+                        swal("Oops!", "¡error!", "error")
+                    }
+
+
+                }
+            });
+
+
+        });
+
+        $(document).ready(function () {
+
+            $(".chosen-select-single").chosen();
+            $(".chosen-select-multiple").chosen();
+            $(".chosen-group-select").chosen();
+            $(".chosen-group-multiple-select").chosen();
+
+
+
+
+        });
+
+
+        // GRIDS de segundo paso
+
+        $(document).ready(function () {
+            var grid;
+
+
+            grid = $("#grid").grid({
+                dataKey: "Id",
+                uiLibrary: "bootstrap",
+                columns: [
+                    { field: "Id", width: 50, sortable: true },
+                    { field: "Descripcion", sortable: true },
+                    { field: "Tipo", width: 70, title: "Tipo", sortable: true },
+                    //{ field: "Orden", width: 70, title: "Orden", sortable: true },
+
+                    { title: "Opciones", field: "Opciones", width: 70, type: "icon", icon: "glyphicon glyphicon-eye-open", tooltip: "Ver Opciones", events: { "click": VerOpciones } },
+
+                ],
+                pager: { enable: true, limit: 5, sizes: [5, 10, 15, 20] }
+            });
+            // $("#btnAddPregunta").on("click", Add);
+            $("#btnSave").on("click", GuardarAsignacion);
+            $("#btnSearch").on("click", Search);
+
+            function Search() {
+                grid.reload({ searchString: $("#search").val() });
+            }
+
+            function GuardarAsignacion(e) {
+                $.ajax({
+                    async: false,
+                    url: '/Encuestas/AsignarOrden',
+                    data: '',
+
+                }).success(function () {
+
+                });
+            }
+
+            function VerOpciones(e) {
+
+                $.ajax({
+                    url: "@Url.Action("VerOpciones", "Encuestas")", dataType: "json",
+                    type: "POST", data: { id: e.data.record.Id }
+                })
+            .done(function (resp) {
+
+                var newHTML = [];
+
+                for (var i = 0; i < resp.length; i++) {
+                    newHTML.push('<li>' + resp[i].Descripcion + '</li>');
+                }
+                $(".modal-body").html(newHTML.join(""));
+
+
+                $("#PreguntasModal").modal("show");
+
+            })
+            .fail(function () {
+                swal("Ooops!", "imposible de eliminar", "error")
+            });
+
+            }
+
+            /**
+                   segundo grid
+
+
+                   **/
+
+            var grid2;
+
+
+
+            grid2 = $("#grid2").grid({
+                dataKey: "Id",
+                uiLibrary: "bootstrap",
+                columns: [
+                    { field: "Id", width: 50, sortable: true },
+                    { field: "Descripcion", sortable: true },
+                    { field: "Tipo", width: 70, title: "Tipo", sortable: true },
+                    { title: "Opciones", field: "Opciones", width: 70, type: "icon", icon: "glyphicon glyphicon-eye-open", tooltip: "Ver Opciones", events: { "click": VerOpciones } },
+
+
+
+
+                ],
+                pager: { enable: true, limit: 5, sizes: [5, 10, 15, 20] }
+            });
+
+            function Search() {
+                grid2.reload({ searchString: $("#search2").val() });
+            }
+            $("#btnSearch2").on("click", Search);
+
+            function VerOpciones(e) {
+
+                $.ajax({
+                    url: "@Url.Action("VerOpciones", "Encuestas")", dataType: "json",
+                    type: "POST", data: { id: e.data.record.Id }
+                })
+            .done(function (resp) {
+
+                //  var jsonStr = $("pre").text();
+                // var jsonObj = JSON.parse(resp);
+                //  var jsonPretty = JSON.stringify(jsonObj, null, '\t');
+
+                //  $(".modal-body").text(jsonPretty);
+                var newHTML = [];
+
+                for (var i = 0; i < resp.length; i++) {
+                    newHTML.push('<li>' + resp[i].Descripcion + '</li>');
+                }
+                $(".modal-body").html(newHTML.join(""));
+
+
+                $("#PreguntasModal").modal("show");
+
+            })
+            .fail(function () {
+                swal("Oops...", "Error", "error");
+
+                //  alert("Error.");
+
+            });
+
+            }
+
+
+        });
+
+    </script>
+}

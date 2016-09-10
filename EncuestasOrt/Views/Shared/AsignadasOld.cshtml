@@ -1,0 +1,81 @@
+﻿@Styles.Render("~/Styles/WidgetAccordion.css")
+
+<!--
+    <!-- nuevo -->
+<div class="widget widget-gray">
+    <!-- TYPE PANEL -->
+    <div class="widget-head">
+        <!-- HEAD PANEL -->
+        <h4 class="heading"><i class="fa fa-question"></i>@preg.Descripcion</h4>
+    </div><!-- /HEAD PANEL -->
+
+    <div class="widget-body" id="widget-body-@preg.Id">
+        <!-- CONTENT PANEL -->
+        @foreach (var opt in preg.Opcion)
+        {
+
+            if (preg.Tipo == "radio")
+            {
+                <input type="radio" name="preg-@opt.Id" value="@opt.valor" disabled> @opt.valor
+
+            }
+            if (preg.Tipo == "check")
+            {
+                <input type="checkbox" name="preg-@opt.Id" value="@opt.valor" disabled>@opt.valor
+
+            }
+            <br />
+        }
+
+    </div><!-- /CONTENT PANEL -->
+
+    <div class="widget-footer">
+        <!-- FOOTER PANEL-->
+        <a href="#" class="fa fa-minus-circle fa-1x" data-toggle="tooltip" data-placement="right" title="" data-original-title="FA-MINUS-CIRCLE"><i></i></a>
+        <a href="#" class="fa fa-pencil fa-1x" data-toggle="tooltip" data-placement="right" title="" data-original-title="FA-PENCIL"><i></i></a>
+        <a href="#" class="fa fa-search fa-1x" data-toggle="tooltip" data-placement="right" title="" data-original-title="FA-SEARCH"><i></i></a>
+        <a href="#" class="fa fa-plus-circle fa-1x" data-toggle="tooltip" data-placement="right" title="" data-original-title="FA-PLUS-CIRCLE"><i></i></a>
+        <a href="#" id="toggle1" class="fa fa-chevron-up fa-1x" data-toggle="tooltip" data-placement="right" title="" data-original-title="FA-PLUS-CIRCLE"><i></i></a>
+    </div><!-- /FOOTER PANEL-->
+
+</div> <!-- /TYPE PANEL -->
+<!-- nuevo-->
+-->
+
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+
+            $('a').tooltip({ placement: 'top' });
+
+            $("#toggle1").click(function () {
+                $("#widget-body1").slideToggle("slow");
+
+                $('#toggle1').toggleClass(function () {
+                    if ($(this).is('.fa fa-chevron-down')) {
+                        return '.fa fa-chevron-up';
+                    } else {
+                        return '.fa fa-chevron-down';
+                    }
+                })
+            });
+
+            $("#toggle2").click(function () {
+                $("#widget-body2").slideToggle("slow");
+
+                $('#toggle2').toggleClass(function () {
+                    if ($(this).is('.fa fa-chevron-down')) {
+                        return '.fa fa-chevron-up';
+                    } else {
+                        return '.fa fa-chevron-down';
+                    }
+                })
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,66 @@
+﻿@model EncuestasOrt.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Registrarse";
+}
+
+<link href="@Url.Content("~/Content/BoxLogin.css")" rel="stylesheet" type="text/css" />
+
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        
+        <div class="row row-fluid">
+            <!-- columna con logo de ORT -->
+            <div class="col-xs-6 col-sm-4 hidden-xs">
+                <br />
+                <img class="img-responsive" src="@Url.Content("~/Content/MiTemplate/imagenes/ORT.png")" alt="" />
+            </div>
+
+            <!-- columna con login -->
+            <div class="col-sm-4 ">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-lock"></span> Registrarse
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            @Html.ValidationSummary()
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Contraseña" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Repetir Contraseña" })
+                                </div>
+                            </div>
+               
+                            <div class="form-group last">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <input type="submit" class="btn btn-default" value="Registrarse" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-4"></div>
+        </div>
+
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

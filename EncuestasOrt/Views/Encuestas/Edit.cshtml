@@ -1,0 +1,148 @@
+﻿@model EncuestasOrt.Models.CrearEncuestaModel
+
+
+@{
+    ViewBag.Title = "Editar";
+}
+
+<h2>Editar</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Encuesta</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.encuesta.Id)
+        @Html.HiddenFor(model => model.encuesta.UsuarioID)
+        @Html.HiddenFor(model => model.encuesta.TemplateID)
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.TematicaID, "Tematica", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownListFor(model => model.encuesta.TematicaID, (SelectList)ViewBag.tematicas, String.Empty, htmlAttributes: new { @class = "chosen-select-single", style = "width:200px;" })
+
+                @Html.ValidationMessageFor(model => model.encuesta.MateriaID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.MateriaID, "Materia", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownListFor(model => model.encuesta.MateriaID, (SelectList)ViewBag.materias, new { @class = "chosen-select-single", style = "width:200px;" })
+
+                @Html.ValidationMessageFor(model => model.encuesta.MateriaID)
+            </div>
+        </div>
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.Curso, "Curso", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.encuesta.Curso, Model.cursos, String.Empty, htmlAttributes: new { @class = "chosen-select-single", style = "width:200px;" })
+                @Html.ValidationMessageFor(model => model.encuesta.Curso, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.Descripcion, "Titulo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.encuesta.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.encuesta.Descripcion)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.FechaHora, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <!--Html.EditorFor(model => model.FechaHora, new { htmlAttributes = new { class = "form-control" } }) -->
+                @Html.DisplayFor(model => model.encuesta.FechaHora, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.encuesta.FechaHora)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.ClaveAcceso, "Clave de acceso", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.encuesta.ClaveAcceso, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.encuesta.ClaveAcceso)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.Estado, "Activo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.encuesta.Estado, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.encuesta.Estado)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.EsTemplate, "Guardar como Plantilla", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.encuesta.EsTemplate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.encuesta.EsTemplate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.encuesta.Cantidad, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.encuesta.Cantidad, new { htmlAttributes = new { min = 1, required = "required" } })
+                    @Html.ValidationMessageFor(model => model.encuesta.Cantidad, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-green" />
+                <input type="button" value="Cancelar" class="btn btn-default pull" id="cancelCreate" />
+
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+
+    @Styles.Render("~/Content/chosen.css")
+    @Scripts.Render("~/Scripts/chosen.jquery.min.js")
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".chosen-select-single").chosen();
+            $(".chosen-select-multiple").chosen();
+            $(".chosen-group-select").chosen();
+            $(".chosen-group-multiple-select").chosen();
+
+
+            $('#cancelCreate').click(function () {
+                parent.history.back();
+                return false;
+            });
+
+
+        });
+
+
+
+
+    </script>
+
+
+
+
+
+}
