@@ -1,0 +1,68 @@
+﻿@model EncuestasOrt.Models.BancoPreguntas
+
+
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+
+
+
+
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.tematicaDescripcion <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu">
+
+                        <li>@Ajax.ActionLink("Ver todas", "GetPreguntasSinAsignar", "Preguntas", new { @id = Model.idEncuesta, @tematicaId = 0, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @esPropia = @Model.filtros.esPropia }, new AjaxOptions { LoadingElementId = "loadingId", UpdateTargetId = "BancoPreguntas", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }) </li>
+                                               
+                        @foreach (var tema in Model.filtros.tematicas)
+                        {
+                            <li>@Ajax.ActionLink(@tema.Descripcion, "GetPreguntasSinAsignar", "Preguntas", new { @id = Model.idEncuesta, @tematicaId = @tema.Id, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @esPropia = @Model.filtros.esPropia }, new AjaxOptions { LoadingElementId = "loadingId", UpdateTargetId = "BancoPreguntas", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }) </li>
+                        }
+
+                    </ul>
+                </div>
+
+                @if (@Model.filtros.opcionTematicaId != null && @Model.filtros.opcionTematicaId > 0)
+                {
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.materiaDescripcion <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+
+                            <li>@Ajax.ActionLink("Ver todas", "GetPreguntasSinAsignar", "Preguntas", new { @id = Model.idEncuesta, @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia }, new AjaxOptions { LoadingElementId = "loadingId", UpdateTargetId = "BancoPreguntas", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })</li>
+
+                            @foreach (var mat in Model.filtros.materias)
+                            {
+                                if (Model.filtros.opcionTematicaId == mat.TematicaID)
+                                {
+                                    <li>@Ajax.ActionLink(@mat.Descripcion, "GetPreguntasSinAsignar", "Preguntas", new { @id = Model.idEncuesta, @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @mat.Id, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia }, new AjaxOptions { LoadingElementId = "loadingId", UpdateTargetId = "BancoPreguntas", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }) </li>
+                                }
+                            }
+
+                        </ul>
+                    </div>
+                }
+
+         
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.opcionEstadoDescripcion <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>@Ajax.ActionLink("Activas", "GetPreguntasSinAsignar", "Preguntas", new { @id = Model.idEncuesta, @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = 1, @esPropia = @Model.filtros.esPropia }, new AjaxOptions { LoadingElementId = "loadingId", UpdateTargetId = "BancoPreguntas", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" }) </li>
+                        <li>@Ajax.ActionLink("Inactivas", "GetPreguntasSinAsignar", "Preguntas", new { @id = Model.idEncuesta, @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = 2, @esPropia = @Model.filtros.esPropia }, new AjaxOptions { LoadingElementId = "loadingId", UpdateTargetId = "BancoPreguntas", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })</li>
+                        <li>@Ajax.ActionLink("Activas/Inactivas", "GetPreguntasSinAsignar", "Preguntas", new { @id = Model.idEncuesta, @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = 3, @esPropia = @Model.filtros.esPropia }, new AjaxOptions { LoadingElementId = "loadingId", UpdateTargetId = "BancoPreguntas", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.esPropiaDescripcion <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>@Ajax.ActionLink("Todas", "GetPreguntasSinAsignar", "Preguntas", new { @id = Model.idEncuesta, @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = 0 }, new AjaxOptions { LoadingElementId = "loadingId", UpdateTargetId = "BancoPreguntas", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })</li>
+                        <li>@Ajax.ActionLink("Propias", "GetPreguntasSinAsignar", "Preguntas", new { @id = Model.idEncuesta, @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = 1 }, new AjaxOptions { LoadingElementId = "loadingId", UpdateTargetId = "BancoPreguntas", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

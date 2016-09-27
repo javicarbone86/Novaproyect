@@ -1,0 +1,70 @@
+﻿@model IEnumerable<EncuestasOrt.Pregunta>
+
+@using Microsoft.AspNet.Identity;
+
+
+@foreach (var preg in Model)
+{
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title clearfix">
+                <a data-toggle="collapse" data-parent="#accordion-preg-@preg.Id" href="#item-@preg.Id">@preg.Descripcion</a>
+            </h4>
+
+
+        </div>
+        <div id="item-@preg.Id" class="panel-collapse collapse">
+            <div class="panel-body">
+
+                @foreach (var opt in preg.Opcion)
+                {
+                    <div class="col-md-4">
+                        @if (preg.Tipo == "radio")
+                        {
+                            <input type="radio" name="preg-@opt.Id" value="@opt.valor" disabled> @opt.valor
+
+                        }
+                        @if (preg.Tipo == "check")
+                        {
+                            <input type="checkbox" name="preg-@opt.Id" value="@opt.valor" disabled>@opt.valor
+
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <div class="panel-footer clearfix">
+            <div class="pull-right">
+                <button type="button" class="btnBorrarPregunta btn btn-sm btn-warning">Desasignar</button>
+                <input type="hidden" class="valorPregunta" value="@preg.Id">
+
+                @if (preg.UsuarioID == User.Identity.GetUserId()) { 
+                <button type="button" class="btnEditarPregunta btn btn-sm btn-warning">Editar</button>
+                }
+             </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+}
+
+
+@section Scripts {
+
+
+    <script>
+
+        $(document).ready(function () {
+
+        });
+
+    </script>
+}

@@ -1,0 +1,82 @@
+﻿@using EncuestasOrt.Models
+@model LoginViewModel
+
+@{
+    ViewBag.Title = "Iniciar sesión";
+}
+
+<link href="@Url.Content("~/Content/MiTemplate/css/Login2.css")" rel="stylesheet" type="text/css" />
+
+<link href="@Url.Content("~/Content/BoxLogin.css")" rel="stylesheet" type="text/css" />
+
+
+<div class="container">
+
+    <div class="row row-fluid">
+        <!-- columna con logo de ORT -->
+        <div class="col-xs-6 col-sm-4 hidden-xs">
+            <br />
+            <img class="img-responsive" src="@Url.Content("~/Content/MiTemplate/imagenes/ORT.png")" alt="" />
+        </div>
+
+        <!-- columna con login -->
+        <div class="col-sm-4 ">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-lock"></span> Iniciar Sesión
+                </div>
+                <div class="panel-body">
+
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.ValidationSummary()
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Contraseña" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-10">
+                                <div class="checkbox">
+                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                    @Html.LabelFor(m => m.RememberMe)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group last">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <input type="submit" value="Iniciar sesión" class="btn btn-default" />
+                            </div>
+                        </div>
+
+                        @*<p>
+                            @Html.ActionLink("Registrarse como usuario nuevo", "Register")
+                        </p>*@
+                        <p>
+                            @Html.ActionLink("¿Olvidó su contraseña?", "ForgotPassword")
+                        </p>
+
+                    }
+                </div>
+
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-4"></div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+   
+
+}

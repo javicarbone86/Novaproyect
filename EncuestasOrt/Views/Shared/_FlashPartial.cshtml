@@ -1,0 +1,16 @@
+﻿@foreach (var key in TempData.Keys)
+{
+    if (key.Equals("warning") || key.Equals("error") || key.Equals("success"))
+    {
+        <script type="text/javascript">
+            $(function () {
+                toastr["@(key)"]("@TempData[key]");
+
+                //       swal("", "@TempData[key]", "@(key)")
+
+            });
+        </script>
+    }
+
+
+}

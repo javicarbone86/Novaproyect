@@ -1,0 +1,62 @@
+﻿@model EncuestasOrt.Pregunta
+
+<link href="@Url.Content("~/Content/MiTemplate/css/Background.css")" rel="stylesheet" type="text/css" />
+
+<h2>¿Seguro que desea borrar esta pregunta?</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Requerido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Requerido)
+        </dd>
+
+        <dt>Opciones </dt>
+
+        @foreach (var item in Model.Opcion)
+        {
+            <dd>
+                @Html.DisplayFor(model => item.valor)
+            </dd>
+        }
+
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-danger btn-sm" />
+            <a class="btn btn-default btn-sm" href="@Url.Action("Index")">
+                Cancelar
+            </a>
+
+        </div>
+    }
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

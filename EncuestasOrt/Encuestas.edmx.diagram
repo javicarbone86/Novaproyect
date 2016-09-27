@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a853b254359a4c1283ce0f06e6351731" Name="Diagram1" >
+        <EntityTypeShape EntityType="Encuestas.Encuesta" Width="1.5" PointX="2.5" PointY="2.125" />
+        <EntityTypeShape EntityType="Encuestas.EncuestaPregunta" Width="1.5" PointX="5.25" PointY="4.625" />
+        <EntityTypeShape EntityType="Encuestas.EncuestaRespuesta" Width="1.5" PointX="9.375" PointY="6.375" />
+        <EntityTypeShape EntityType="Encuestas.Materia" Width="1.5" PointX="1.5" PointY="15.75" />
+        <EntityTypeShape EntityType="Encuestas.Opcion" Width="1.5" PointX="7.5" PointY="11.875" />
+        <EntityTypeShape EntityType="Encuestas.Pregunta" Width="1.5" PointX="0.5" PointY="5.75" />
+        <AssociationConnector Association="Encuestas.FK_Encuesta_Materia" />
+        <AssociationConnector Association="Encuestas.FK_EncuestaPregunta_Encuesta" />
+        <AssociationConnector Association="Encuestas.FK_Respuesta_Encuesta" />
+        <AssociationConnector Association="Encuestas.FK_EncuestaPregunta_Pregunta" />
+        <AssociationConnector Association="Encuestas.FK_EncuestaRespuesta_Opcion" />
+        <AssociationConnector Association="Encuestas.FK_Respuesta_Pregunta" />
+        <AssociationConnector Association="Encuestas.FK_Opcion_Pregunta" />
+        <AssociationConnector Association="Encuestas.FK_Pregunta_Materia" />
+        <EntityTypeShape EntityType="Encuestas.Carrera" Width="1.5" PointX="3.75" PointY="11.25" />
+        <EntityTypeShape EntityType="Encuestas.EncuestaRealizada" Width="1.5" PointX="7.25" PointY="1.25" />
+        <EntityTypeShape EntityType="Encuestas.Tematica" Width="1.5" PointX="0.75" PointY="11.625" />
+        <AssociationConnector Association="Encuestas.FK_Tematica_Carrera" />
+        <AssociationConnector Association="Encuestas.FK_Encuesta_Tematica" />
+        <AssociationConnector Association="Encuestas.FK_EncuestaRealizada_Encuesta" />
+        <AssociationConnector Association="Encuestas.FK_EncuestaRespuesta_EncuestaRealizada" />
+        <AssociationConnector Association="Encuestas.FK_Materia_Tematica" />
+        <AssociationConnector Association="Encuestas.FK_Pregunta_Tematica" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
