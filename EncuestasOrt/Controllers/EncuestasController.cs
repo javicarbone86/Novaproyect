@@ -1064,7 +1064,6 @@ namespace EncuestasOrt.Controllers
             ViewBag.tematicas = new SelectList(db.Tematica, "Id", "Descripcion");
             
 
-
             ViewBag.idEncuesta = idEncuesta;
             
             return PartialView("_EditPregunta", model);
