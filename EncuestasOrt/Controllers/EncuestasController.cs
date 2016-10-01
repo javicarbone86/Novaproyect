@@ -1062,7 +1062,7 @@ namespace EncuestasOrt.Controllers
             ViewBag.OpcionesPregunta = lista;
             ViewBag.materias = new SelectList(db.Materia, "Id", "Descripcion");
             ViewBag.tematicas = new SelectList(db.Tematica, "Id", "Descripcion");
-
+            
 
             ViewBag.idEncuesta = idEncuesta;
             
