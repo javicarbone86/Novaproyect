@@ -763,7 +763,7 @@ namespace EncuestasOrt.Controllers
 
         // Agregado por Gabriel el 22/07/2016
         [Authorize]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, int? opcionCursoID)
         {
             string currentUserId = User.Identity.GetUserId();
             //string currentUserId = User.Identity.Name;   // captura el usuario o sea el email
@@ -839,6 +839,30 @@ namespace EncuestasOrt.Controllers
             else
                 esPropiaDesc = "Todas";
 
+            string cursoDesc = "Curso";
+            if (opcionCursoID != null)
+            {
+                switch ((int)opcionCursoID)
+                {
+                    case 1:
+                        cursoDesc = "A";
+                        break;
+                    case 2:
+                        cursoDesc = "B";
+                        break;
+                    case 3:
+                        cursoDesc = "C";
+                        break;
+                    case 4:
+                        cursoDesc = "D";
+                        break;
+                    default:
+                        cursoDesc = "A";
+                        break;
+                }
+            }
+
+
             string tematicaDesc = "Temática";
             if (tematicaId != null && tematicaId != 0)
             {
@@ -894,12 +918,15 @@ namespace EncuestasOrt.Controllers
             filtros.opcionEncuestaId = opcionEncuestaId;
             filtros.opcionEstado = estado;
             filtros.esPropia = esPropia;
+            filtros.opcionCursoId = opcionCursoID;
+            
 
             filtros.tematicaDescripcion = tematicaDesc;
             filtros.materiaDescripcion = materiaDesc;
             filtros.opcionEncuestaDescripcion = opEncuestaDesc;
             filtros.opcionEstadoDescripcion = estadoDesc;
             filtros.esPropiaDescripcion = esPropiaDesc;
+            filtros.cursoDescripcion = cursoDesc;
 
 
             var cant = ModeloA.Count();
@@ -1062,7 +1089,7 @@ namespace EncuestasOrt.Controllers
             ViewBag.OpcionesPregunta = lista;
             ViewBag.materias = new SelectList(db.Materia, "Id", "Descripcion");
             ViewBag.tematicas = new SelectList(db.Tematica, "Id", "Descripcion");
-
+            
 
             ViewBag.idEncuesta = idEncuesta;
             

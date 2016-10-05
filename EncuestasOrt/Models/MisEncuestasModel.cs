@@ -42,15 +42,21 @@ namespace EncuestasOrt.Models
         public Nullable<int> opcionEncuestaId { get; set; }
         public Nullable<int> opcionEstado { get; set; }
         public Nullable<int> esPropia { get; set; }
-        
+        public Nullable<int> opcionCursoId { get; set; }
+
+
         public string tematicaDescripcion { get; set; }
         public string materiaDescripcion { get; set; }
         public string opcionEncuestaDescripcion { get; set; }
         public string opcionEstadoDescripcion { get; set; }
         public string esPropiaDescripcion { get; set; }
-        
+        public string cursoDescripcion { get; set; }
+
+
         public IEnumerable<EncuestasOrt.Tematica> tematicas { get; set; }
         public IEnumerable<EncuestasOrt.Materia> materias { get; set; }
+       
+
 
     }
 
