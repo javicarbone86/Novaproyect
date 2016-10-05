@@ -1619,6 +1619,7 @@
     <Content Include="Content\Dashboard\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\Dashboard\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="MyPDFs\Manual De usuario.pdf" />
+    <None Include="Properties\PublishProfiles\borrar.pubxml" />
     <None Include="Properties\PublishProfiles\DonWeb.pubxml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

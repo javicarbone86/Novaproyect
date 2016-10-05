@@ -154,7 +154,7 @@
             @Html.LabelFor(model => model.TematicaID, "Tematica", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
 
-                @Html.DropDownListFor(model => model.TematicaID, (SelectList)ViewBag.tematicas, htmlAttributes: new { @class = "chosen-select-single", style = "width:200px;" })
+                @Html.DropDownListFor(model => model.TematicaID, (SelectList)ViewBag.tematicas, String.Empty, htmlAttributes: new { @class = "chosen-select-single", style = "width:200px;" })
 
                 @Html.ValidationMessageFor(model => model.TematicaID, "", new { @class = "text-danger" })
             </div>
@@ -164,7 +164,7 @@
             @Html.LabelFor(model => model.MateriaID, "Materia", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
 
-                @Html.DropDownListFor(model => model.MateriaID, (SelectList)ViewBag.materias, htmlAttributes: new { @class = "chosen-select-single", style = "width:200px;" })
+                @Html.DropDownListFor(model => model.MateriaID, (SelectList)ViewBag.materias, String.Empty, htmlAttributes: new { @class = "chosen-select-single", style = "width:200px;" })
 
 
                 @Html.ValidationMessageFor(model => model.MateriaID, "", new { @class = "text-danger" })
