@@ -856,7 +856,7 @@ namespace EncuestasOrt.Controllers
                                //where e.EsTemplate == true
                            where (tematicaId == null || tematicaId == 0 || (tematicaId != null && e.TematicaID == tematicaId))
                                 && (materiaId == null || materiaId == 0 || (materiaId != null && e.MateriaID == materiaId))
-                                && (curso == null || curso == "*" || (e.Curso == curso))
+                                && (curso == null || curso == "*" || curso== "CURSOS" || (e.Curso == curso))
                                 && (opcionEncuestaId == null || opcionEncuestaId == 0 || (opcionEncuestaId != null
                                     && ((opcionEncuestaId == 1 && e.EsTemplate == false)
                                         || (opcionEncuestaId == 2 && e.EsTemplate == true)
@@ -889,54 +889,15 @@ namespace EncuestasOrt.Controllers
             FiltrosEncuesta filtros = new FiltrosEncuesta();
             filtros.tematicas = (from t in db.Tematica select t).ToList();
             filtros.materias = (from m in db.Materia where m.TematicaID == tematicaId select m).ToList();
-            if (curso != "*") {
+           
 
                 var cursofiltrado = (from c in db.Encuesta orderby c.Curso select c.Curso).ToList();
-                int indice = 0;
-
-            
-                int total = cursofiltrado.Count();
-                List<string> ListaDeCursos = new List<string>();
-                string anterior = cursofiltrado[indice];
-               
-                    while (indice < total)
-                    {
-                    while (indice < total && cursofiltrado[indice] != null)
-                    {
-                        while (indice < total && cursofiltrado[indice] != null && anterior == cursofiltrado[indice])
-                        {
-
-                            indice++;
-
-                        }
-                        anterior = cursofiltrado[indice];
-                        ListaDeCursos.Add(anterior);
-                        indice++;
-
-                    }
-                    indice++;
-
-                }
-                
-                filtros.Curso = ListaDeCursos;
 
 
-            }
-            else
-            {
-            /*    var studentQuery2 =
-                 from student in students
-                 group student by student.Last[0] into g
-                 orderby g.Key
-                 select g;
+                filtros.Curso = filtros.TraerOrdenadoLosCursos(cursofiltrado);
 
 
-
-
-                */
-
-
-            }
+          
 
 
             filtros.opcionTematicaId = tematicaId;
@@ -944,7 +905,7 @@ namespace EncuestasOrt.Controllers
             filtros.opcionEncuestaId = opcionEncuestaId;
             filtros.opcionEstado = estado;
             filtros.esPropia = esPropia;
-
+            filtros.cursoDescripcion = curso;
             filtros.opcionCurso= curso;
 
             filtros.tematicaDescripcion = tematicaDesc;
