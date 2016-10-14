@@ -35,9 +35,11 @@ namespace EncuestasOrt.Models
 
     public class FiltrosEncuesta
     {
+       
 
         // Agregado por Gabriel el 22/07/2016
         public Nullable<int> opcionTematicaId { get; set; }
+        public string  opcionCurso { get; set; }
         public Nullable<int> opcionMateriaId { get; set; }
         public Nullable<int> opcionEncuestaId { get; set; }
         public Nullable<int> opcionEstado { get; set; }
@@ -48,10 +50,11 @@ namespace EncuestasOrt.Models
         public string opcionEncuestaDescripcion { get; set; }
         public string opcionEstadoDescripcion { get; set; }
         public string esPropiaDescripcion { get; set; }
+        public string cursoDescripcion { get; set; }
         
         public IEnumerable<EncuestasOrt.Tematica> tematicas { get; set; }
         public IEnumerable<EncuestasOrt.Materia> materias { get; set; }
-
+        public IEnumerable<string> Curso { get; set; }
     }
 
 

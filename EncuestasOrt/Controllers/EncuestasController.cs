@@ -763,7 +763,7 @@ namespace EncuestasOrt.Controllers
 
         // Agregado por Gabriel el 22/07/2016
         [Authorize]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, string curso)
         {
             string currentUserId = User.Identity.GetUserId();
             //string currentUserId = User.Identity.Name;   // captura el usuario o sea el email
@@ -782,7 +782,7 @@ namespace EncuestasOrt.Controllers
             //                                    ).FirstOrDefault();
 
             bool esSupervisor = EsSupervisor();
-            
+
             string opEncuestaDesc = "Encuestas/Plantillas";
             if (opcionEncuestaId != null)
             {
@@ -853,9 +853,10 @@ namespace EncuestasOrt.Controllers
 
 
             var ModeloA = (from e in db.Encuesta
-                           //where e.EsTemplate == true
+                               //where e.EsTemplate == true
                            where (tematicaId == null || tematicaId == 0 || (tematicaId != null && e.TematicaID == tematicaId))
                                 && (materiaId == null || materiaId == 0 || (materiaId != null && e.MateriaID == materiaId))
+                                && (curso == null || curso == "*" || (e.Curso == curso))
                                 && (opcionEncuestaId == null || opcionEncuestaId == 0 || (opcionEncuestaId != null
                                     && ((opcionEncuestaId == 1 && e.EsTemplate == false)
                                         || (opcionEncuestaId == 2 && e.EsTemplate == true)
@@ -888,6 +889,55 @@ namespace EncuestasOrt.Controllers
             FiltrosEncuesta filtros = new FiltrosEncuesta();
             filtros.tematicas = (from t in db.Tematica select t).ToList();
             filtros.materias = (from m in db.Materia where m.TematicaID == tematicaId select m).ToList();
+            if (curso != "*") {
+
+                var cursofiltrado = (from c in db.Encuesta orderby c.Curso select c.Curso).ToList();
+                int indice = 0;
+
+            
+                int total = cursofiltrado.Count();
+                List<string> ListaDeCursos = new List<string>();
+                string anterior = cursofiltrado[indice];
+               
+                    while (indice < total)
+                    {
+                    while (indice < total && cursofiltrado[indice] != null)
+                    {
+                        while (indice < total && cursofiltrado[indice] != null && anterior == cursofiltrado[indice])
+                        {
+
+                            indice++;
+
+                        }
+                        anterior = cursofiltrado[indice];
+                        ListaDeCursos.Add(anterior);
+                        indice++;
+
+                    }
+                    indice++;
+
+                }
+                
+                filtros.Curso = ListaDeCursos;
+
+
+            }
+            else
+            {
+            /*    var studentQuery2 =
+                 from student in students
+                 group student by student.Last[0] into g
+                 orderby g.Key
+                 select g;
+
+
+
+
+                */
+
+
+            }
+
 
             filtros.opcionTematicaId = tematicaId;
             filtros.opcionMateriaId = materiaId;
@@ -895,12 +945,15 @@ namespace EncuestasOrt.Controllers
             filtros.opcionEstado = estado;
             filtros.esPropia = esPropia;
 
+            filtros.opcionCurso= curso;
+
             filtros.tematicaDescripcion = tematicaDesc;
             filtros.materiaDescripcion = materiaDesc;
             filtros.opcionEncuestaDescripcion = opEncuestaDesc;
             filtros.opcionEstadoDescripcion = estadoDesc;
             filtros.esPropiaDescripcion = esPropiaDesc;
 
+            
 
             var cant = ModeloA.Count();
 
