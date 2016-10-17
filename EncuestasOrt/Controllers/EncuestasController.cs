@@ -891,10 +891,10 @@ namespace EncuestasOrt.Controllers
             filtros.materias = (from m in db.Materia where m.TematicaID == tematicaId select m).ToList();
            
 
-                var cursofiltrado = (from c in db.Encuesta orderby c.Curso select c.Curso).ToList();
+                var cursofiltrado = (from c in db.Encuesta where c.Curso != null orderby c.Curso  select c.Curso).Distinct().ToList();
 
-
-                filtros.Curso = filtros.TraerOrdenadoLosCursos(cursofiltrado);
+            filtros.Curso = cursofiltrado;
+            
 
 
           
