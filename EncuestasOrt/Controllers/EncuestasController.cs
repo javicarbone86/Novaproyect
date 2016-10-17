@@ -763,7 +763,7 @@ namespace EncuestasOrt.Controllers
 
         // Agregado por Gabriel el 22/07/2016
         [Authorize]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, string curso)
         {
             string currentUserId = User.Identity.GetUserId();
             //string currentUserId = User.Identity.Name;   // captura el usuario o sea el email
@@ -782,7 +782,7 @@ namespace EncuestasOrt.Controllers
             //                                    ).FirstOrDefault();
 
             bool esSupervisor = EsSupervisor();
-            
+
             string opEncuestaDesc = "Encuestas/Plantillas";
             if (opcionEncuestaId != null)
             {
@@ -853,9 +853,10 @@ namespace EncuestasOrt.Controllers
 
 
             var ModeloA = (from e in db.Encuesta
-                           //where e.EsTemplate == true
+                               //where e.EsTemplate == true
                            where (tematicaId == null || tematicaId == 0 || (tematicaId != null && e.TematicaID == tematicaId))
                                 && (materiaId == null || materiaId == 0 || (materiaId != null && e.MateriaID == materiaId))
+                                && (curso == null || curso == "*" || curso== "CURSOS" || (e.Curso == curso))
                                 && (opcionEncuestaId == null || opcionEncuestaId == 0 || (opcionEncuestaId != null
                                     && ((opcionEncuestaId == 1 && e.EsTemplate == false)
                                         || (opcionEncuestaId == 2 && e.EsTemplate == true)
@@ -888,12 +889,24 @@ namespace EncuestasOrt.Controllers
             FiltrosEncuesta filtros = new FiltrosEncuesta();
             filtros.tematicas = (from t in db.Tematica select t).ToList();
             filtros.materias = (from m in db.Materia where m.TematicaID == tematicaId select m).ToList();
+           
+
+                var cursofiltrado = (from c in db.Encuesta where c.Curso != null orderby c.Curso  select c.Curso).Distinct().ToList();
+
+            filtros.Curso = cursofiltrado;
+            
+
+
+          
+
 
             filtros.opcionTematicaId = tematicaId;
             filtros.opcionMateriaId = materiaId;
             filtros.opcionEncuestaId = opcionEncuestaId;
             filtros.opcionEstado = estado;
             filtros.esPropia = esPropia;
+            filtros.cursoDescripcion = curso;
+            filtros.opcionCurso= curso;
 
             filtros.tematicaDescripcion = tematicaDesc;
             filtros.materiaDescripcion = materiaDesc;
@@ -901,6 +914,7 @@ namespace EncuestasOrt.Controllers
             filtros.opcionEstadoDescripcion = estadoDesc;
             filtros.esPropiaDescripcion = esPropiaDesc;
 
+            
 
             var cant = ModeloA.Count();
 
@@ -1062,7 +1076,7 @@ namespace EncuestasOrt.Controllers
             ViewBag.OpcionesPregunta = lista;
             ViewBag.materias = new SelectList(db.Materia, "Id", "Descripcion");
             ViewBag.tematicas = new SelectList(db.Tematica, "Id", "Descripcion");
-
+            
 
             ViewBag.idEncuesta = idEncuesta;
             
