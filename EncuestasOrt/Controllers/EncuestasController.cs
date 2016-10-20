@@ -763,7 +763,7 @@ namespace EncuestasOrt.Controllers
 
         // Agregado por Gabriel el 22/07/2016
         [Authorize]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, int? opcionCursoID)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, string curso)
         {
             string currentUserId = User.Identity.GetUserId();
             //string currentUserId = User.Identity.Name;   // captura el usuario o sea el email
@@ -782,7 +782,7 @@ namespace EncuestasOrt.Controllers
             //                                    ).FirstOrDefault();
 
             bool esSupervisor = EsSupervisor();
-            
+
             string opEncuestaDesc = "Encuestas/Plantillas";
             if (opcionEncuestaId != null)
             {
@@ -839,30 +839,6 @@ namespace EncuestasOrt.Controllers
             else
                 esPropiaDesc = "Todas";
 
-            string cursoDesc = "Curso";
-            if (opcionCursoID != null)
-            {
-                switch ((int)opcionCursoID)
-                {
-                    case 1:
-                        cursoDesc = "A";
-                        break;
-                    case 2:
-                        cursoDesc = "B";
-                        break;
-                    case 3:
-                        cursoDesc = "C";
-                        break;
-                    case 4:
-                        cursoDesc = "D";
-                        break;
-                    default:
-                        cursoDesc = "A";
-                        break;
-                }
-            }
-
-
             string tematicaDesc = "Temática";
             if (tematicaId != null && tematicaId != 0)
             {
@@ -877,9 +853,10 @@ namespace EncuestasOrt.Controllers
 
 
             var ModeloA = (from e in db.Encuesta
-                           //where e.EsTemplate == true
+                               //where e.EsTemplate == true
                            where (tematicaId == null || tematicaId == 0 || (tematicaId != null && e.TematicaID == tematicaId))
                                 && (materiaId == null || materiaId == 0 || (materiaId != null && e.MateriaID == materiaId))
+                                && (curso == null || curso == "*" || curso== "CURSOS" || (e.Curso == curso))
                                 && (opcionEncuestaId == null || opcionEncuestaId == 0 || (opcionEncuestaId != null
                                     && ((opcionEncuestaId == 1 && e.EsTemplate == false)
                                         || (opcionEncuestaId == 2 && e.EsTemplate == true)
@@ -912,22 +889,32 @@ namespace EncuestasOrt.Controllers
             FiltrosEncuesta filtros = new FiltrosEncuesta();
             filtros.tematicas = (from t in db.Tematica select t).ToList();
             filtros.materias = (from m in db.Materia where m.TematicaID == tematicaId select m).ToList();
+           
+
+                var cursofiltrado = (from c in db.Encuesta where c.Curso != null orderby c.Curso  select c.Curso).Distinct().ToList();
+
+            filtros.Curso = cursofiltrado;
+            
+
+
+          
+
 
             filtros.opcionTematicaId = tematicaId;
             filtros.opcionMateriaId = materiaId;
             filtros.opcionEncuestaId = opcionEncuestaId;
             filtros.opcionEstado = estado;
             filtros.esPropia = esPropia;
-            filtros.opcionCursoId = opcionCursoID;
-            
+            filtros.cursoDescripcion = curso;
+            filtros.opcionCurso= curso;
 
             filtros.tematicaDescripcion = tematicaDesc;
             filtros.materiaDescripcion = materiaDesc;
             filtros.opcionEncuestaDescripcion = opEncuestaDesc;
             filtros.opcionEstadoDescripcion = estadoDesc;
             filtros.esPropiaDescripcion = esPropiaDesc;
-            filtros.cursoDescripcion = cursoDesc;
 
+            
 
             var cant = ModeloA.Count();
 
