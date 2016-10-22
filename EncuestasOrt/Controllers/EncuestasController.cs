@@ -39,14 +39,14 @@ namespace EncuestasOrt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            DatosEncuesta encuesta = (from e in db.Encuesta
+           DatosEncuesta encuesta = (from e in db.Encuesta
                                       where (e.Id == id)
                                       select new DatosEncuesta
                                       {
                                           encuesta = e,
                                           preguntas = (from p in db.Pregunta
                                                        join q2 in db.EncuestaPregunta on p.Id equals q2.PreguntaID
-                                                      // where q2.EncuestaID == e.Id
+                                                       where q2.EncuestaID == e.Id
                                                       orderby q2.Id ascending
                                                         select p
                                                            ).ToList()
@@ -55,6 +55,7 @@ namespace EncuestasOrt.Controllers
 
 
                                       }).SingleOrDefault();
+            
 
            
 
@@ -63,7 +64,7 @@ namespace EncuestasOrt.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             return View(encuesta);
         }
 
@@ -702,6 +703,7 @@ namespace EncuestasOrt.Controllers
                                   preguntas = (from p in db.Pregunta
                                                join q in db.EncuestaPregunta on p.Id equals q.PreguntaID
                                                where q.EncuestaID == e.Id
+                                               orderby q.Id ascending
                                                select p
                                                    ).ToList()
 
@@ -875,6 +877,7 @@ namespace EncuestasOrt.Controllers
                                preguntas = (from p in db.Pregunta
                                             join q2 in db.EncuestaPregunta on p.Id equals q2.PreguntaID
                                             where q2.EncuestaID == e.Id
+                                            orderby q2.Id ascending
                                             select p
                                                 ).ToList(),
 
