@@ -480,8 +480,10 @@ namespace EncuestasOrt.Views
             var data = (from e in db.Pregunta
                         join p in db.EncuestaPregunta on e.Id equals p.PreguntaID
                         where p.EncuestaID == id
-                        orderby e.Id ascending
+                        orderby p.Id ascending
                         select e).AsEnumerable();
+
+            //OrderBy(p => p.Id).ToList();
 
             return PartialView("_PreguntasAsignadas", data);
 
@@ -496,11 +498,12 @@ namespace EncuestasOrt.Views
 
             string currentUserId = User.Identity.GetUserId();
 
-            // Busco las preguntas que estan agregadas a la encuesta 
+            // Busco las preguntas que no estan asignadas a la encuesta 
             var listadoExcep = (from e in db.EncuestaPregunta
                                 where e.EncuestaID == id
-                                orderby e.Id ascending
+                                
                                 select new { PreguntaId = e.PreguntaID }).ToList();
+           
 
             // Convierto a listado
             List<int> listado = new List<int>();
