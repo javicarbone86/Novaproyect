@@ -483,7 +483,7 @@ namespace EncuestasOrt.Views
 
             return PartialView("_PreguntasAsignadas", data);
 
-
+            
 
         }
 

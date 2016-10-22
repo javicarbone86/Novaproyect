@@ -46,20 +46,24 @@ namespace EncuestasOrt.Controllers
                                           encuesta = e,
                                           preguntas = (from p in db.Pregunta
                                                        join q2 in db.EncuestaPregunta on p.Id equals q2.PreguntaID
-                                                       where q2.EncuestaID == e.Id
-                                                       select p
+                                                      // where q2.EncuestaID == e.Id
+                                                      orderby q2.Id ascending
+                                                        select p
                                                            ).ToList()
+                                                          
+                                                          // .AsEnumerable().OrderBy(a => a.EncuestaPregunta)
 
 
                                       }).SingleOrDefault();
 
-
+           
 
 
             if (encuesta == null)
             {
                 return HttpNotFound();
             }
+            
             return View(encuesta);
         }
 
