@@ -23,11 +23,12 @@ namespace EncuestasOrt.Views
         // GET: Preguntas
         public ActionResult IndexOldPage(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var Questions = from Preguntas in db.Pregunta
+            var Questions = from Preguntas in db.Pregunta 
+                        
                             select Preguntas;
 
 
-            Questions = Questions.OrderByDescending(Preguntas => Preguntas.Id);
+            Questions = Questions.OrderBy(Preguntas => Preguntas.Id);
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -330,10 +331,10 @@ namespace EncuestasOrt.Views
                     }
                     else
                     {
-                        data = SortController.OrderByDescending(data, sortBy);
+                        data = SortController.OrderBy(data, sortBy);
                     }
                 }
-                else { data = SortController.OrderByDescending(data, "Id");  }
+                else { data = SortController.OrderBy(data, "Id");  }
                 var preguntas = data.ToList();
                 total = data.Count();
 
@@ -479,11 +480,14 @@ namespace EncuestasOrt.Views
             var data = (from e in db.Pregunta
                         join p in db.EncuestaPregunta on e.Id equals p.PreguntaID
                         where p.EncuestaID == id
+                        orderby p.Id ascending
                         select e).AsEnumerable();
+
+            //OrderBy(p => p.Id).ToList();
 
             return PartialView("_PreguntasAsignadas", data);
 
-
+            
 
         }
 
@@ -494,10 +498,12 @@ namespace EncuestasOrt.Views
 
             string currentUserId = User.Identity.GetUserId();
 
-            // Busco las preguntas que estan agregadas a la encuesta 
+            // Busco las preguntas que no estan asignadas a la encuesta 
             var listadoExcep = (from e in db.EncuestaPregunta
                                 where e.EncuestaID == id
+                                
                                 select new { PreguntaId = e.PreguntaID }).ToList();
+           
 
             // Convierto a listado
             List<int> listado = new List<int>();
@@ -563,7 +569,7 @@ namespace EncuestasOrt.Views
                      && (((esPropia == null || esPropia == 1) && p.UsuarioID == currentUserId) || esPropia == 0)
 
                         )
-                        select p).AsEnumerable().OrderByDescending(e => e.Id).ToList();
+                        select p).AsEnumerable().OrderBy(e => e.Id).ToList();
             
 
 
