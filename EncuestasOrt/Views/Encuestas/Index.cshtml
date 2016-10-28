@@ -50,6 +50,28 @@
     <div class="panel-group">
         <div class="panel panel-default">
             <div class="panel-body">
+               
+
+                <div  class="btn-group">
+                    @if (Model.filtros.FechaDesde == null)
+                    {
+                        Model.filtros.FechaDesde = DateTime.Today;
+
+                    }
+                    @{
+                       
+                        @*@Html.TextBox("", String.Format(Model.filtros.FechaDesde.Value.ToShortDateString()),
+     new { @class = "datefield", type = "string" })*@
+                    }
+                    
+                    @*Html.TextBoxFor(m => m.filtros.FechaDesde, "{0:dd-MM-yyyy}", new { @type = "date" })*@ 
+
+                    <input type="date" value='@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaDesde)' onchange="filterDate(this.value);" />
+                      
+                </div>
+
+
+
 
                 <div>
 @if (Model.filtros.Curso != null)
@@ -61,8 +83,8 @@
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.cursoDescripcion <span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu">
-
-    <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia, @curso = "*" })">Ver todos</a></li>
+                
+    <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia, @curso = "*", @fechaDesde = @Model.filtros.FechaDesde })">Ver todos</a></li>
                
     @foreach (var cur in Model.filtros.Curso)
     {
@@ -276,15 +298,41 @@
 
 
 @section Scripts {
+
     <script>
         $(document).ready(function () {
 
 
-        
-             
-            
-
+            $('.date').datepicker({
+                dateFormat: "dd/mm/yy"
+            });
+      
         });
+        @*function getDate() {
+       
+            var encuesta = $('#Encuesta').val();
+            var fechaDesde =$('.date').val();
+
+            $.ajax({ url: "@Url.Action("Index", "Encuestas")", type: "POST", data: { tematicaId: '@Model.filtros.opcionTematicaId', materiaId: '@Model.filtros.opcionMateriaId', opcionEncuestaId: '@Model.filtros.opcionEncuestaId', estado: '@Model.filtros.opcionEstado', esPropia: '@Model.filtros.esPropia', curso: '@Model.filtros.cursoDescripcion', fechaDesde: fechaDesde } })
+
+        .done(function () {
+
+            swal("ALGO", "Pregunta agregada", "success")
+
+            // actualizarNoAsignadas(); 2/8
+
+        })
+     .fail(function () {
+         swal("Oops...", "Error al asignar la pregunta", "error");
+
+     });
+        }*@
+        filterDate = function (e) {
+            console.log(e);
+            var url = ' @Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = Model.filtros.esPropia, @curso = Model.filtros.cursoDescripcion ,@fechaDesde = Model.filtros.FechaDesde})';
+            
+            window.location.href = url + '&fechaDesde=' + e;
+            }
 
     </script>
 }

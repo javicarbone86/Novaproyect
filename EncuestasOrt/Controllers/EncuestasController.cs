@@ -769,7 +769,7 @@ namespace EncuestasOrt.Controllers
 
         // Agregado por Gabriel el 22/07/2016
         [Authorize]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, string curso)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, string curso, DateTime? fechaDesde, DateTime? fechaHasta)
         {
             string currentUserId = User.Identity.GetUserId();
             //string currentUserId = User.Identity.Name;   // captura el usuario o sea el email
@@ -920,7 +920,7 @@ namespace EncuestasOrt.Controllers
             filtros.opcionEncuestaDescripcion = opEncuestaDesc;
             filtros.opcionEstadoDescripcion = estadoDesc;
             filtros.esPropiaDescripcion = esPropiaDesc;
-
+            filtros.FechaDesde = fechaDesde;
             
 
             var cant = ModeloA.Count();
