@@ -856,6 +856,36 @@ namespace EncuestasOrt.Controllers
             {
                 materiaDesc = (from m2 in db.Materia where m2.Id == (int)materiaId select m2.Descripcion).FirstOrDefault();
             }
+            //me esta rompiendo la fecha porque le estoy asignando valores distintos en formato,tanto en el server como en la vista, debo ponerle otro, el seteado funcionaba hasta por ahi nomas
+
+
+
+            DateTime? auxfecha;
+
+            if (fechaHasta == null)
+            {
+                fechaHasta = DateTime.Now;
+                fechaHasta = DateTime.Parse(((DateTime)fechaHasta).ToShortDateString());
+            }
+            fechaHasta = ((DateTime)fechaHasta).AddHours(23).AddMinutes(59).AddSeconds(59);
+            if (fechaDesde == null)
+            {
+                fechaDesde = DateTime.Now;
+                fechaDesde = DateTime.Parse(((DateTime)fechaDesde).ToShortDateString()).AddDays(-60);
+            }
+            if (fechaDesde > fechaHasta) {
+                auxfecha = ((DateTime)fechaHasta).AddHours(-23).AddMinutes(-59).AddSeconds(-59);
+                fechaHasta = ((DateTime)fechaDesde).AddHours(23).AddMinutes(59).AddSeconds(59);
+                fechaDesde = auxfecha;
+            }
+
+            
+
+           
+
+
+
+
 
 
             var ModeloA = (from e in db.Encuesta
@@ -863,6 +893,7 @@ namespace EncuestasOrt.Controllers
                            where (tematicaId == null || tematicaId == 0 || (tematicaId != null && e.TematicaID == tematicaId))
                                 && (materiaId == null || materiaId == 0 || (materiaId != null && e.MateriaID == materiaId))
                                 && (curso == null || curso == "*" || curso== "CURSOS" || (e.Curso == curso))
+                                 && (  fechaDesde <= e.FechaHora && e.FechaHora <= fechaHasta )
                                 && (opcionEncuestaId == null || opcionEncuestaId == 0 || (opcionEncuestaId != null
                                     && ((opcionEncuestaId == 1 && e.EsTemplate == false)
                                         || (opcionEncuestaId == 2 && e.EsTemplate == true)
@@ -920,8 +951,10 @@ namespace EncuestasOrt.Controllers
             filtros.opcionEncuestaDescripcion = opEncuestaDesc;
             filtros.opcionEstadoDescripcion = estadoDesc;
             filtros.esPropiaDescripcion = esPropiaDesc;
-            filtros.FechaDesde = fechaDesde;
             
+
+            filtros.FechaDesde = fechaDesde ;
+            filtros.FechaHasta = fechaHasta;
 
             var cant = ModeloA.Count();
 

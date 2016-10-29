@@ -52,7 +52,6 @@ namespace EncuestasOrt.Models
         public string opcionEstadoDescripcion { get; set; }
         public string esPropiaDescripcion { get; set; }
         public string cursoDescripcion { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
 
@@ -60,6 +59,7 @@ namespace EncuestasOrt.Models
         public IEnumerable<EncuestasOrt.Materia> materias { get; set; }
         public IEnumerable<string> Curso { get; set; }
 
+      
         public IEnumerable<string> TraerOrdenadoLosCursos(List<string> query)
         {
 
