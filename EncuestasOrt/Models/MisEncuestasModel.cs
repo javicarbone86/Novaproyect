@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -51,11 +52,14 @@ namespace EncuestasOrt.Models
         public string opcionEstadoDescripcion { get; set; }
         public string esPropiaDescripcion { get; set; }
         public string cursoDescripcion { get; set; }
-        
+        public DateTime? FechaDesde { get; set; }
+        public DateTime? FechaHasta { get; set; }
+
         public IEnumerable<EncuestasOrt.Tematica> tematicas { get; set; }
         public IEnumerable<EncuestasOrt.Materia> materias { get; set; }
         public IEnumerable<string> Curso { get; set; }
 
+      
         public IEnumerable<string> TraerOrdenadoLosCursos(List<string> query)
         {
 
