@@ -1178,7 +1178,7 @@ namespace EncuestasOrt.Controllers
 
             try
             {
-                //conexion.Open();
+                //conex  ion.Open();
                 adaptador.SelectCommand = comando;
                 adaptador.Fill(dsDatos, "DATOS");
 
