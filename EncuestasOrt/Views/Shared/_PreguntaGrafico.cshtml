@@ -4,9 +4,6 @@
 @using Chart.Mvc.Extensions
 @{
 
-    // Create the data table.
-    //List<string> optionList = new List<string>();
-
     var data = new DataTable();
     List<double> list = new List<double>();
     List<string> listaLabel = new List<string>();
@@ -22,22 +19,24 @@
     var barChart = new BarChart();
     barChart.ComplexData.Labels.AddRange(listaLabel);
     barChart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
-                           {
-                              new ComplexDataset
-                                  {
-                                      Data = list,
-                                      Label = "My First dataset",
-                                      FillColor = "rgba(220,220,220,0.2)",
-                                      StrokeColor = "rgba(220,220,220,1)",
-                                      PointColor = "rgba(220,220,220,1)",
-                                      PointStrokeColor = "#fff",
-                                      PointHighlightFill = "#fff",
-                                      PointHighlightStroke = "rgba(220,220,220,1)",
-                                  }
-                          });
+        {
+            new ComplexDataset
+                {
+                    Data = list,
+                    Label = "My First dataset",
+                    FillColor = "rgba(220,220,220,0.2)",
+                    StrokeColor = "rgba(220,220,220,1)",
+                    PointColor = "rgba(220,220,220,1)",
+                    PointStrokeColor = "#fff",
+                    PointHighlightFill = "#fff",
+                    PointHighlightStroke = "rgba(220,220,220,1)",
+                }
+        });
+ 
 }
 
 <canvas id="chart_div_@ViewBag.IdChart" width="400" height="400"></canvas>
+
 @Html.CreateChart(@collapser, barChart)
 
 

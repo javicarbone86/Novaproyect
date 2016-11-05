@@ -1392,7 +1392,6 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Chart.js" />
-    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\chosen.proto.js" />
@@ -1622,6 +1621,7 @@
     <Content Include="MyPDFs\Manual De usuario.pdf" />
     <None Include="Properties\PublishProfiles\borrar.pubxml" />
     <None Include="Properties\PublishProfiles\DonWeb.pubxml" />
+    <None Include="Properties\PublishProfiles\Encuestas.pubxml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
