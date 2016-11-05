@@ -1,59 +1,42 @@
 ﻿@model DataTable
 @using System.Data
+@using Chart.Mvc.ComplexChart;
+@using Chart.Mvc.Extensions
+@{
 
+    var data = new DataTable();
+    List<double> list = new List<double>();
+    List<string> listaLabel = new List<string>();
+    foreach (DataRow row in ((DataTable)Model).Rows)
+    {
 
+        list.Add(Double.Parse(row[1].ToString()));
+        listaLabel.Add(row[0].ToString());
 
-    <script type="text/javascript" src="@Url.Content("~/Scripts/PieChart.js")"></script>
-    <script type="text/javascript">
+    }
 
-
-            // Load the Visualization API and the piechart package.
-            google.load('visualization', '1.0', { 'packages': ['corechart'] });
-
-            // Set a callback to run when the Google Visualization API is loaded.
-            google.setOnLoadCallback(drawChart);
-
-            // Callback that creates and populates a data table,
-            // instantiates the pie chart, passes in the data and
-            // draws it.
-            function drawChart() {
-                // Create the data table.
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Topping');
-                data.addColumn('number', 'Slices');
-                data.addRows([
-                    @{int count = 0;}
-                    @foreach (DataRow row in ((DataTable)Model).Rows)
+    string collapser = "chart_div_" + ViewBag.IdChart;
+    var barChart = new BarChart();
+    barChart.ComplexData.Labels.AddRange(listaLabel);
+    barChart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+        {
+            new ComplexDataset
                 {
-                    if (count>0)
-                    {
-                        @Html.Raw(",['"+row[0]+"',"+row[1]+"]");
-                    }
-                    else
-                    {
-                        @Html.Raw("['" + row[0] + "'," + row[1] + "]");
-                    }
-                    count++;
+                    Data = list,
+                    Label = "My First dataset",
+                    FillColor = "rgba(220,220,220,0.2)",
+                    StrokeColor = "rgba(220,220,220,1)",
+                    PointColor = "rgba(220,220,220,1)",
+                    PointStrokeColor = "#fff",
+                    PointHighlightFill = "#fff",
+                    PointHighlightStroke = "rgba(220,220,220,1)",
                 }
-                ]);
+        });
+ 
+}
 
-                // Set chart options
-                var options = {
-                    'title': '',
-                    'width': 300,
-                    'height': 300
-                };
+<canvas id="chart_div_@ViewBag.IdChart" width="400" height="400"></canvas>
 
-                // Instantiate and draw our chart, passing in some options.
-                var chart = new google.visualization.PieChart(document.getElementById('chart_div_@ViewBag.IdChart'));
+@Html.CreateChart(@collapser, barChart)
 
-                chart.draw(data, options);
-            }
-
-
-    </script>
-
-
-
-<div id="chart_div_@ViewBag.IdChart" style="width: 50%; margin: 0px auto;"></div>
 

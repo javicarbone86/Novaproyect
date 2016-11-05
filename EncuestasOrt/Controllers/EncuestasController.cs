@@ -1148,7 +1148,7 @@ namespace EncuestasOrt.Controllers
 
 
 
-        // Verifica si el usuario logueado es Supervisor
+        // Verifica si el usuario l ogueado es Supervisor
         private Boolean EsSupervisor()
         { 
             bool esSupervisor = false;

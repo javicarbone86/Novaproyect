@@ -15,7 +15,7 @@
                     <a data-toggle="collapse" data-parent="#accordion-preg-@item.Id" href="#@item.Id">@item.Descripcion</a>
                 </h4>
             </div>
-            <div id="@item.Id" class="panel-collapse collapse">
+            <div id="@item.Id">
                 <div class="panel-body">
                     @Html.Action("GetGraficoPregunta", new { idEncuesta = Model.idEncuesta, idPregunta = item.Id, fechaDesde = Model.fechaDesde, fechaHasta = Model.fechaHasta })
                 </div>
