@@ -1029,7 +1029,36 @@ namespace EncuestasOrt.Controllers
 
         }
 
+        [HttpGet]
+        [Authorize]
+        public ActionResult getResultadosEncuestaLinea(int idEncuesta, DateTime? fechaDesde, DateTime? fechaHasta)
+        {
+            if (fechaDesde == null)
+                fechaDesde = DateTime.Now.AddDays(-30);
 
+            if (fechaHasta == null)
+                fechaHasta = DateTime.Now;
+
+            fechaDesde = DateTime.Parse(((DateTime)fechaDesde).ToShortDateString());
+            fechaHasta = DateTime.Parse(((DateTime)fechaHasta).ToShortDateString());
+
+            DateTime fechaHastaConsulta = ((DateTime)fechaHasta).AddDays(1);
+
+            var questions = (from p in db.Pregunta
+                             join q in db.EncuestaPregunta on p.Id equals q.PreguntaID
+                             join e in db.Encuesta on q.EncuestaID equals e.Id
+                             where ((e.Id == idEncuesta) || (e.EsTemplate == true && e.TemplateID == idEncuesta))
+                                    && (e.FechaHora >= fechaDesde && e.FechaHora < fechaHastaConsulta)
+                             select p).AsEnumerable().ToList();
+
+            ResultadosGModel model = new ResultadosGModel();
+            model.idEncuesta = idEncuesta;
+            model.preguntas = questions;
+            model.fechaDesde = fechaDesde;
+            model.fechaHasta = fechaHasta;
+            return PartialView("_ResultadoEncuestaLinea", model);
+
+        }
 
 
 
@@ -1093,6 +1122,68 @@ namespace EncuestasOrt.Controllers
 
             ViewBag.idChart = idPregunta;
             return PartialView("_PreguntaGrafico", dt);
+
+
+        }
+        [HttpGet]
+        [Authorize]
+        public ActionResult GetGraficoPreguntaLinea(int idEncuesta, int idPregunta, DateTime? fechaDesde, DateTime? fechaHasta)
+        {
+
+            if (fechaDesde == null)
+                fechaDesde = DateTime.Now.AddDays(-30);
+
+            if (fechaHasta == null)
+                fechaHasta = DateTime.Now;
+
+            fechaDesde = DateTime.Parse(((DateTime)fechaDesde).ToShortDateString());
+            fechaHasta = DateTime.Parse(((DateTime)fechaHasta).ToShortDateString());
+
+            DateTime fechaHastaConsulta = ((DateTime)fechaHasta).AddDays(1);
+
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("item"));
+            dt.Columns.Add(new DataColumn("cantidad"));
+
+
+            var respuestas = (from p in db.Opcion
+                              where (p.PreguntaID == idPregunta)
+                              select new
+                              {
+                                  Id = p.Id,
+                                  PreguntaID = p.PreguntaID,
+                                  Valor = p.valor,
+                                  Peso = p.PesoEstadistico
+                              }).ToList();
+
+            foreach (var item in respuestas)
+            {
+                DataRow row1 = dt.NewRow();
+                row1[0] = item.Valor;
+
+                var encuestarespuestas = (from p in db.EncuestaRespuesta
+
+                                          join e in db.Encuesta on p.EncuestaID equals e.Id
+                                          where p.OpcionID == item.Id
+                                                && ((e.Id == idEncuesta) || (e.EsTemplate == false && e.TemplateID == idEncuesta))
+                                                && (e.FechaHora >= fechaDesde && e.FechaHora < fechaHastaConsulta)
+
+                                          select new
+                                          {
+                                              Id = p.Id,
+                                              EncuestaID = p.EncuestaID,
+                                              PreguntaID = p.PreguntaID,
+                                              OpcionID = p.OpcionID,
+                                          }).ToList();
+
+                row1[1] = encuestarespuestas.Count();
+                dt.Rows.Add(row1);
+            }
+
+
+            ViewBag.idChart = idPregunta;
+            return PartialView("_PreguntaGraficoLinea", dt);
 
 
         }

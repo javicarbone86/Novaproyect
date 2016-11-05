@@ -1736,6 +1736,8 @@
     <Content Include="Views\Shared\_OpcionEditor.cshtml" />
     <Content Include="Views\Shared\_ResultadoEncuesta.cshtml" />
     <Content Include="Views\Home\Help.cshtml" />
+    <Content Include="Views\Shared\_ResultadoEncuestaLinea.cshtml" />
+    <Content Include="Views\Shared\_PreguntaGraficoLinea.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
