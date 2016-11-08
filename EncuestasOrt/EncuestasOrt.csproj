@@ -209,6 +209,7 @@
     <Compile Include="Controllers\EncuestasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MateriasController.cs" />
+    <Compile Include="Controllers\PlantillasController.cs" />
     <Compile Include="Encuesta.cs">
       <DependentUpon>Encuestas.tt</DependentUpon>
     </Compile>
@@ -1738,6 +1739,7 @@
     <Content Include="Views\Home\Help.cshtml" />
     <Content Include="Views\Shared\_ResultadoEncuestaLinea.cshtml" />
     <Content Include="Views\Shared\_PreguntaGraficoLinea.cshtml" />
+    <Content Include="Views\Plantillas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

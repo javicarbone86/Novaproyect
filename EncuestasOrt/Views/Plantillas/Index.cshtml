@@ -1,0 +1,227 @@
+﻿
+<h2></h2>
+
+@*@model PagedList.IPagedList<EncuestasOrt.Models.DatosEncuesta>*@
+@model EncuestasOrt.Models.MisEncuestasModel
+@using PagedList.Mvc;
+
+
+<style>
+    .dropdown.dropdown-lg .dropdown-menu {
+        margin-top: -1px;
+        padding: 6px 20px;
+    }
+
+    .input-group-btn .btn-group {
+        display: flex !important;
+    }
+
+    .btn-group .btn {
+        border-radius: 0;
+        margin-left: -1px;
+    }
+
+        .btn-group .btn:last-child {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+    .btn-group .form-horizontal .btn[type="submit"] {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .form-horizontal .form-group {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .form-group .form-control:last-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+</style>
+
+
+<div class="container">
+    <h2>Plantillas</h2>
+
+
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+
+
+
+
+
+
+                <div>
+
+   @if (Model.filtros.PlantillaDescripcion == "" || Model.filtros.PlantillaDescripcion == null)
+    {
+        Model.filtros.PlantillaDescripcion = "PLANTILLAS";
+    }
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.PlantillaDescripcion <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = 0, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @esPropia = @Model.filtros.esPropia,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta,@plantillaId = 0  })">Ver todas</a></li>
+            @foreach (var Plantilla in Model.filtros.Plantilla)
+            {
+
+
+                <li><a href="@Url.Action("Index", "Plantillas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionTematicaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia, @curso = Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta, @plantillaId = Plantilla.Id })">@Plantilla.Descripcion</a></li>
+
+            }
+
+        </ul>
+    </div>
+
+
+                    @if (Model.filtros.Curso != null)
+                    {
+                        if (Model.filtros.cursoDescripcion == "*" || Model.filtros.cursoDescripcion == null)
+                        {
+                            Model.filtros.cursoDescripcion = "CURSOS";
+                        }
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.cursoDescripcion <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+
+                                <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia, @curso = "*", @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta })">Ver todos</a></li>
+
+                                @foreach (var cur in Model.filtros.Curso)
+                                {
+
+
+                                    <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionTematicaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia, @curso = @cur , @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta })">@cur</a></li>
+
+                                }
+
+                            </ul>
+                        </div>
+                    }
+
+                    @if (@Model.filtros.opcionEncuestaId != 4)
+                    {
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.tematicaDescripcion <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+
+                                <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = 0, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @esPropia = @Model.filtros.esPropia,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta  })">Ver todas</a></li>
+
+                                @foreach (var tema in Model.filtros.tematicas)
+                                {
+                                    <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @tema.Id, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @esPropia = @Model.filtros.esPropia ,@curso=Model.filtros.cursoDescripcion , @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta })">@tema.Descripcion</a></li>
+                                }
+
+                            </ul>
+                        </div>
+                    }
+
+                    @if (@Model.filtros.opcionTematicaId != null && @Model.filtros.opcionTematicaId > 0)
+                    {
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.materiaDescripcion <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+
+                                <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = 0, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta  })">Ver todas</a></li>
+
+                                @foreach (var mat in Model.filtros.materias)
+                                {
+                                    if (Model.filtros.opcionTematicaId == mat.TematicaID)
+                                    {
+                                        <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @mat.Id, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta  })">@mat.Descripcion</a></li>
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.opcionEncuestaDescripcion <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = 1, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta  })">Encuestas</a></li>
+                            <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = 2, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia,@curso=Model.filtros.cursoDescripcion , @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta })">Plantillas</a></li>
+                            <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = 3, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta  })">Encuestas/Plantillas</a></li>
+                            <li><a href="@Url.Action("Index", "Encuestas", new { @opcionEncuestaId = 4, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia })">Plantillas Institucionales</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.opcionEstadoDescripcion <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = 1, @esPropia = @Model.filtros.esPropia,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta  })">Activas</a></li>
+                            <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = 2, @esPropia = @Model.filtros.esPropia ,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta })">Inactivas</a></li>
+                            <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = 3, @esPropia = @Model.filtros.esPropia,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta  })">Activas/Inactivas</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> @Model.filtros.esPropiaDescripcion <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = 0,@curso=Model.filtros.cursoDescripcion, @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta  })">Todas</a></li>
+                            <li><a href="@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = 1,@curso=Model.filtros.cursoDescripcion , @fechaDesde = @Model.filtros.FechaDesde, @fechaHasta = Model.filtros.FechaHasta })">Propias</a></li>
+                        </ul>
+                    </div>
+                    <br />
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+
+                                <div class="btn-group" alingn="center">
+                                    @if (Model.filtros.FechaDesde == null)
+                                    {
+                                        Model.filtros.FechaDesde = new DateTime(2016, 4, 1);
+
+                                    }
+                                    FECHA DESDE
+                                    <input style="width: 85%; color:ButtonText;" type="date" value='@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaDesde)' onchange="filterDateFrom(this.value);" />
+
+                                </div>
+
+                                <div class="btn-group" alingn="center">
+                                    @if (Model.filtros.FechaHasta == null)
+                                    {
+                                        Model.filtros.FechaHasta = DateTime.Today;
+
+                                    }
+                                    FECHA HASTA
+                                    <input style="width: 85%;  color:ButtonText;" type="date" value='@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaHasta)' onchange="filterDateUntil(this.value);" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+ 
+
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            filterDateFrom = function (e) {
+
+                console.log(e);
+                var url = ' @Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = Model.filtros.esPropia, @curso = Model.filtros.cursoDescripcion})';
+
+                window.location.href = url + '&fechaDesde=' + e + '&fechaHasta=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaHasta)';
+            }
+            filterDateUntil = function (e) {
+                console.log(e);
+                var url = '@Url.Action("Index", "Encuestas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = Model.filtros.esPropia, @curso = Model.filtros.cursoDescripcion })';
+
+                window.location.href = url + '&fechaDesde=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaDesde)' + '&fechaHasta=' + e;
+            }
+        });
+    </script>
+}
