@@ -69,7 +69,7 @@ namespace EncuestasOrt.Controllers
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, string curso, DateTime? fechaDesde, DateTime? fechaHasta, int? plantillaId)
         {
             string currentUserId = User.Identity.GetUserId();
-      
+
 
             var mis_encuestas = db.Encuesta.Where(e => e.UsuarioID == currentUserId).OrderByDescending(e => e.FechaHora);
 
@@ -142,7 +142,7 @@ namespace EncuestasOrt.Controllers
             {
                 materiaDesc = (from m2 in db.Materia where m2.Id == (int)materiaId select m2.Descripcion).FirstOrDefault();
             }
-            
+
 
 
 
@@ -180,6 +180,7 @@ namespace EncuestasOrt.Controllers
                            where (tematicaId == null || tematicaId == 0 || (tematicaId != null && e.TematicaID == tematicaId))
                                 && (materiaId == null || materiaId == 0 || (materiaId != null && e.MateriaID == materiaId))
                                 && (curso == null || curso == "*" || curso == "CURSOS" || (e.Curso == curso))
+                                 && (plantillaId == null || plantillaId == 0 || (e.Id == plantillaId))
                                  && (fechaDesde <= e.FechaHora && e.FechaHora <= fechaHasta)
                                 && (opcionEncuestaId == null || opcionEncuestaId == 0 || (opcionEncuestaId != null
                                     && ((opcionEncuestaId == 1 && e.EsTemplate == false)
@@ -187,7 +188,7 @@ namespace EncuestasOrt.Controllers
                                         || (opcionEncuestaId == 3)
                                         || (opcionEncuestaId == 4 && e.EsTemplate == true && e.TematicaID == null && e.MateriaID == null))))
                                 && (blnEstado == null || (blnEstado != null && e.Estado == blnEstado))
-                                && (((esPropia == null || esPropia == 1) && e.UsuarioID == currentUserId) || esPropia == 0)
+                                //&& (((esPropia == null || esPropia == 1) && e.UsuarioID == currentUserId) || esPropia == 0)
                                 && ((e.UsuarioID == currentUserId) || e.EsTemplate == true || esSupervisor == true)
                            select new DatosEncuesta
                            {
@@ -218,7 +219,7 @@ namespace EncuestasOrt.Controllers
 
             var cursofiltrado = (from c in db.Encuesta where c.Curso != null orderby c.Curso select c.Curso).Distinct().ToList();
             //query de Encuestas que son plantillas para el combobox
-            var PlantillfFiltrado= (from c in db.Encuesta where c.EsTemplate == true  orderby c.TemplateID select c).Distinct().ToList();
+            var PlantillfFiltrado = (from c in db.Encuesta where c.EsTemplate == true orderby c.TemplateID select c).Distinct().ToList();
             filtros.Curso = cursofiltrado;
             //aca le paso todas las encuestas que son plantilla
             filtros.Plantilla = PlantillfFiltrado;
@@ -227,8 +228,17 @@ namespace EncuestasOrt.Controllers
             filtros.PlantillaId = plantillaId;
 
 
+            if (plantillaId == null || plantillaId == 0)
+            {
+                filtros.PlantillaDescripcion = "PLANTILLAS";
+                filtros.PlantillaId = 0;
 
+            }
+            else {
+                filtros.PlantillaDescripcion = (from c in db.Encuesta where c.Id == plantillaId  select c.Descripcion).FirstOrDefault(); 
 
+            }
+            
             filtros.opcionTematicaId = tematicaId;
             filtros.opcionMateriaId = materiaId;
             filtros.opcionEncuestaId = opcionEncuestaId;
