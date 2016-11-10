@@ -66,7 +66,7 @@ namespace EncuestasOrt.Controllers
             return esSupervisor;
         }
         [Authorize]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, string curso, DateTime? fechaDesde, DateTime? fechaHasta, int? plantillaId)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, int? tematicaId, int? materiaId, int? opcionEncuestaId, int? estado, int? esPropia, string curso, DateTime? fechaDesde, DateTime? fechaHasta, int? plantillaId, DateTime? fechaRangoDesde, DateTime? fechaRangoHasta )
         {
             string currentUserId = User.Identity.GetUserId();
 
@@ -252,7 +252,8 @@ namespace EncuestasOrt.Controllers
             filtros.opcionEncuestaDescripcion = opEncuestaDesc;
             filtros.opcionEstadoDescripcion = estadoDesc;
             filtros.esPropiaDescripcion = esPropiaDesc;
-
+            filtros.FechaRangoDesde = fechaRangoDesde;
+            filtros.FechaRangoHasta = fechaRangoHasta;
 
             filtros.FechaDesde = fechaDesde;
             filtros.FechaHasta = fechaHasta;

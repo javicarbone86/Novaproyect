@@ -55,6 +55,8 @@ namespace EncuestasOrt.Models
         public string cursoDescripcion { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
+        public DateTime? FechaRangoDesde { get; set; }
+        public DateTime? FechaRangoHasta { get; set; }
 
         public IEnumerable<EncuestasOrt.Tematica> tematicas { get; set; }
         public IEnumerable<EncuestasOrt.Materia> materias { get; set; }
