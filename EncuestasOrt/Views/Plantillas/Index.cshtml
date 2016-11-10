@@ -204,8 +204,7 @@
         $(document).ready(function () {
 
             var x = document.getElementById("Check").checked;
-            var j = '@Model.filtros.FechaRangoDesde';
-            console.log("hola",j);
+           
             if ('@Model.filtros.FechaRangoDesde' != '' || '@Model.filtros.FechaRangoHasta' != '') {
                 $("#rango").show();
                 $("#rango2").show();
