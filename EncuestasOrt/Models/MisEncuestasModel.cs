@@ -20,7 +20,7 @@ namespace EncuestasOrt.Models
 
     }
 
-
+   
     public class DatosEncuesta
     {
 
@@ -45,7 +45,8 @@ namespace EncuestasOrt.Models
         public Nullable<int> opcionEncuestaId { get; set; }
         public Nullable<int> opcionEstado { get; set; }
         public Nullable<int> esPropia { get; set; }
-        
+        public Nullable<int> PlantillaId { get; set; }
+        public string PlantillaDescripcion { get; set; }
         public string tematicaDescripcion { get; set; }
         public string materiaDescripcion { get; set; }
         public string opcionEncuestaDescripcion { get; set; }
@@ -54,12 +55,14 @@ namespace EncuestasOrt.Models
         public string cursoDescripcion { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
+        public DateTime? FechaRangoDesde { get; set; }
+        public DateTime? FechaRangoHasta { get; set; }
 
         public IEnumerable<EncuestasOrt.Tematica> tematicas { get; set; }
         public IEnumerable<EncuestasOrt.Materia> materias { get; set; }
         public IEnumerable<string> Curso { get; set; }
+        public IEnumerable<Encuesta> Plantilla { get; set; }
 
-      
         public IEnumerable<string> TraerOrdenadoLosCursos(List<string> query)
         {
 
