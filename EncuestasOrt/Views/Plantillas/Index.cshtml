@@ -204,7 +204,7 @@
         $(document).ready(function () {
 
             var x = document.getElementById("Check").checked;
-           
+
             if ('@Model.filtros.FechaRangoDesde' != '' || '@Model.filtros.FechaRangoHasta' != '') {
                 document.getElementById("Check").setAttribute("checked", "checked");
                 $("#rango").show();
@@ -214,10 +214,10 @@
                 $("#rango2").hide();
                 $("#rango").hide();
             }
-            if ('@Model.filtros.PlantillaId' == 0) {
+            console.log("estado del ", '@Model.filtros.PlantillaId');
+            if ('@Model.filtros.PlantillaId' == 0 || '@Model.filtros.PlantillaId'=='') {
 
                 $("#Filtros").hide();
-
 
             } else {
                 $("#Filtros").show();
@@ -226,33 +226,38 @@
             var Id = '@Model.filtros.PlantillaId';
 
 
-           
+
             filterDateFrom = function (e) {
 
 
-                var url = ' @Url.Action("Index", "Plantillas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = Model.filtros.esPropia, @curso = Model.filtros.cursoDescripcion})';
-
-                window.location.href = url + '&fechaDesde=' + e + '&fechaHasta=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaHasta)'+ '&plantillaId='+ '@Model.filtros.PlantillaId';
+                var url = ' @Url.Action("Index", "Plantillas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = @Model.filtros.esPropia, @curso = @Model.filtros.cursoDescripcion})';
+                var rul = url.replace('amp;','');
+                var lur = rul.replace('amp;','');
+                console.log("fecha desde",lur);
+                window.location.href = lur + '&fechaDesde=' + e + '&fechaHasta=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaHasta)'+ '&plantillaId='+ '@Model.filtros.PlantillaId';
             }
             filterDateUntil = function (e) {
 
                 var url = '@Url.Action("Index", "Plantillas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = Model.filtros.esPropia, @curso = Model.filtros.cursoDescripcion })';
-
-                window.location.href = url + '&fechaDesde=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaDesde)' + '&fechaHasta=' + e+ '&plantillaId='+ '@Model.filtros.PlantillaId';
+                var rul = url.replace('amp;','');
+                var lur = rul.replace('amp;','');
+                window.location.href = lur + '&fechaDesde=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaDesde)' + '&fechaHasta=' + e+ '&plantillaId='+ '@Model.filtros.PlantillaId';
             }
             filterRangeDateFrom = function (e) {
-                console.log("range desde",e);
+
 
                 var url = ' @Url.Action("Index", "Plantillas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = Model.filtros.esPropia, @curso = Model.filtros.cursoDescripcion})';
-
-                window.location.href = url + '&fechaDesde=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaDesde)' + '&fechaHasta=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaHasta)' + '&plantillaId=' + '@Model.filtros.PlantillaId' + '&fechaRangoDesde=' + e + '&fechaRangoHasta=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaRangoHasta)';
-                console.log("materria",@Model.filtros.opcionTematicaId);
+                var rul = url.replace('amp;','');
+                var lur = rul.replace('amp;','');
+                window.location.href = lur + '&fechaDesde=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaDesde)' + '&fechaHasta=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaHasta)' + '&plantillaId=' + '@Model.filtros.PlantillaId' + '&fechaRangoDesde=' + e + '&fechaRangoHasta=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaRangoHasta)';
+              
             }
             filterRangeDateUntil = function (e) {
 
                 var url = '@Url.Action("Index", "Plantillas", new { @tematicaId = @Model.filtros.opcionTematicaId, @materiaId = @Model.filtros.opcionMateriaId, @opcionEncuestaId = @Model.filtros.opcionEncuestaId, @estado = @Model.filtros.opcionEstado, @esPropia = Model.filtros.esPropia, @curso = Model.filtros.cursoDescripcion })';
-
-                window.location.href = url + '&fechaDesde=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaDesde)' + '&fechaHasta=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaHasta)' + '&plantillaId=' + '@Model.filtros.PlantillaId' + '&fechaRangoDesde=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaRangoDesde)' + '&fechaRangoHasta=' + e;
+                var rul = url.replace('amp;','');
+                var lur = rul.replace('amp;','');
+                window.location.href = lur + '&fechaDesde=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaDesde)' + '&fechaHasta=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaHasta)' + '&plantillaId=' + '@Model.filtros.PlantillaId' + '&fechaRangoDesde=' + '@String.Format("{0:yyyy-MM-dd}", Model.filtros.FechaRangoDesde)' + '&fechaRangoHasta=' + e;
             }
 
 
@@ -261,7 +266,7 @@
         });
         ocultarFiltros = function (e) {
 
-            if (e == 0) {
+            if (e == 0 || e =='') {
 
                 $("#Filtros").hide();
 
@@ -286,7 +291,5 @@
                 $("#rango").hide();
             }
         }
-
-        console.log("Model descripcion",'@Model.encuestas');
     </script>
 }
