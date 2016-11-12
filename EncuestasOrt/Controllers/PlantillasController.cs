@@ -273,5 +273,110 @@ namespace EncuestasOrt.Controllers
 
             return View(model);
         }
+        [HttpGet]
+        [Authorize]
+        public ActionResult Resultados(int? tematicaId, int? materiaId, string curso, DateTime? fechaDesde, DateTime? fechaHasta, int? plantillaId, DateTime? fechaRangoDesde, DateTime? fechaRangoHasta)
+        {
+            string currentUserId = User.Identity.GetUserId();
+            bool esSupervisor = EsSupervisor();
+
+            var idEncuestas = (from e in db.Encuesta
+                               where (tematicaId == null || tematicaId == 0 || (tematicaId != null && e.TematicaID == tematicaId))
+                                    && (materiaId == null || materiaId == 0 || (materiaId != null && e.MateriaID == materiaId))
+                                    && (e.TemplateID == plantillaId)
+                                    && (curso == null || curso == "*" || curso == "CURSOS" || (e.Curso == curso))
+                                     && (fechaDesde <= e.FechaHora && e.FechaHora <= fechaHasta)
+                                    && (e.UsuarioID == currentUserId)
+                                    && ((e.UsuarioID == currentUserId) || e.EsTemplate == false || esSupervisor == true)
+                               select e.Id
+                                    ).ToList();
+
+            var idEncuestaSegundoRango = (from e in db.Encuesta
+                                          where (tematicaId == null || tematicaId == 0 || (tematicaId != null && e.TematicaID == tematicaId))
+                                               && (materiaId == null || materiaId == 0 || (materiaId != null && e.MateriaID == materiaId))
+                                               && (e.TemplateID == plantillaId)
+                                               && (curso == null || curso == "*" || curso == "CURSOS" || (e.Curso == curso))
+                                                 && (fechaRangoDesde <= e.FechaHora && e.FechaHora <= fechaRangoHasta)
+                                               && (e.UsuarioID == currentUserId)
+                                               && ((e.UsuarioID == currentUserId) || e.EsTemplate == false || esSupervisor == true)
+                                          select e.Id
+                                      ).ToList();
+
+            var Preguntas = (from e in db.Pregunta join p in db.EncuestaPregunta on e.Id equals p.PreguntaID
+
+                             where p.EncuestaID == plantillaId select e).ToList();
+
+            ResultadosPlantillasModel model = new ResultadosPlantillasModel();
+            model.idEncuestaSegundoRango = idEncuestaSegundoRango;
+            model.idEncuesta = idEncuestas;
+            model.preguntas = Preguntas;
+            model.idPlantilla = plantillaId;
+            return View(model);
+
+        }
+        [HttpGet]
+        [Authorize]
+        public ActionResult getResultadosEncuestaLinea(IEnumerable<int> idEncuestas, IEnumerable<int> idEncuestaSegundoRango, List<Pregunta> Preguntas ,Nullable<int> Plantillaid)
+        {
+            ResultadosPlantillasModel model = new ResultadosPlantillasModel();
+            model.idEncuestaSegundoRango = idEncuestaSegundoRango;
+            model.idEncuesta = idEncuestas;
+            model.preguntas = Preguntas;
+            model.idPlantilla = Plantillaid;
+            return PartialView("_ResultadoEncuestaLineaP", model);
+
+        }
+        [HttpGet]
+        [Authorize]
+        public ActionResult GetGraficoPreguntaLinea(IEnumerable<int> idEncuestas, IEnumerable<int> idEncuestaSegundoRango,int idPregunta, Nullable<int> Plantillaid)
+        {
+
+
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("item"));
+            dt.Columns.Add(new DataColumn("cantidad"));
+
+
+            var respuestas = (from p in db.Opcion
+                              where (p.PreguntaID == idPregunta)
+                              select new
+                              {
+                                  Id = p.Id,
+                                  PreguntaID = p.PreguntaID,
+                                  Valor = p.valor,
+                                  Peso = p.PesoEstadistico
+                              }).ToList();
+
+            foreach (var item in respuestas)
+            {
+                DataRow row1 = dt.NewRow();
+                row1[0] = item.Valor;
+               
+                var encuestarespuestas = (from p in db.EncuestaRespuesta
+
+                                          join e in db.Encuesta on p.EncuestaID equals e.Id
+                                          where p.OpcionID == item.Id
+                                                && idEncuestas.Contains(e.Id)
+                                          select new
+                                          {
+                                              Id = p.Id,
+                                              EncuestaID = p.EncuestaID,
+                                              PreguntaID = p.PreguntaID,
+                                              OpcionID = p.OpcionID,
+                                          }).ToList();
+
+                row1[1] = encuestarespuestas.Count();
+                dt.Rows.Add(row1);
+            }
+
+
+            ViewBag.idChart = idPregunta;
+            return PartialView("_PreguntaGraficoLinea", dt);
+
+
+        }
+
+
     }
 }

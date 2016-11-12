@@ -1,0 +1,24 @@
+﻿@model EncuestasOrt.Models.ResultadosPlantillasModel
+
+@foreach (var item in Model.preguntas)
+{
+
+
+    <div class="panel-group" id="accordion-preg-@item.Id">
+
+        <div class="panel panel-primary animated zoomIn">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion-preg-@item" href="#@item">@item.Descripcion</a>
+                </h4>
+            </div>
+            <div id="@item.Id">
+                <div class="panel-body">
+                    @Html.Action("GetGraficoPreguntaLineaP", new { idEncuesta = Model.idEncuesta, idEncuestaRango = Model.idEncuestaSegundoRango, idPregunta = item.Id })
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}

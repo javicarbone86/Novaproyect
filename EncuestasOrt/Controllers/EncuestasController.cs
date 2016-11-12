@@ -1066,7 +1066,8 @@ namespace EncuestasOrt.Controllers
         [HttpGet]
         [Authorize]
         public ActionResult GetGraficoPregunta(int idEncuesta, int idPregunta, DateTime? fechaDesde, DateTime? fechaHasta)
-        {
+
+       {
              
             if (fechaDesde == null)
                 fechaDesde = DateTime.Now.AddDays(-30);
@@ -1105,7 +1106,7 @@ namespace EncuestasOrt.Controllers
                                           join e in db.Encuesta on p.EncuestaID equals e.Id
                                           where p.OpcionID == item.Id 
                                                 && ((e.Id == idEncuesta) || (e.EsTemplate == false && e.TemplateID == idEncuesta))
-                                                && (e.FechaHora >= fechaDesde && e.FechaHora < fechaHastaConsulta)
+                                               // && (e.FechaHora >= fechaDesde && e.FechaHora < fechaHastaConsulta)
                                   
                                           select new
                                           {

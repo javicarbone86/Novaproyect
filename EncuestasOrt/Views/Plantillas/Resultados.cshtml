@@ -1,0 +1,40 @@
+﻿
+@model EncuestasOrt.Models.ResultadosPlantillasModel
+<br />
+@Html.HiddenFor(model => Model.idPlantilla.Value, htmlAttributes: new { @id = "idPlantilla" })
+<input type="button" value="Grafico en Barra" onclick="return GraficoBarra()" />
+<input type="button" value="Grafico en Linea" onclick="return GraficoLinea()" />
+
+
+<div id="Barra">
+    @Html.Action("GetResultadosEncuestaBarraP", new { idEncuesta = Model.idEncuesta, idEncuestaRango = Model.idEncuestaSegundoRango, Preguntas=Model.preguntas, Plantillaid= Model.idPlantilla })
+</div>
+<div id="Linea">
+    @Html.Action("GetResultadosEncuestaLineaP", new { idEncuesta = Model.idEncuesta, idEncuestaRango = Model.idEncuestaSegundoRango, Preguntas = Model.preguntas, Plantillaid = Model.idPlantilla })
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#Barra").show();
+        $("#Linea").hide();
+    });
+
+
+    GraficoBarra = function () {
+        $("#Barra").show();
+        $("#Linea").hide();
+    }
+    GraficoLinea = function () {
+
+        $("#Linea").show();
+        $("#Barra").hide();
+
+
+    }
+
+
+
+
+</script>
+
+
