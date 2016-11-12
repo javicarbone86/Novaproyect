@@ -188,7 +188,6 @@ namespace EncuestasOrt.Controllers
                                         || (opcionEncuestaId == 3)
                                         || (opcionEncuestaId == 4 && e.EsTemplate == true && e.TematicaID == null && e.MateriaID == null))))
                                 && (blnEstado == null || (blnEstado != null && e.Estado == blnEstado))
-                                //&& (((esPropia == null || esPropia == 1) && e.UsuarioID == currentUserId) || esPropia == 0)
                                 && ((e.UsuarioID == currentUserId) || e.EsTemplate == true || esSupervisor == true)
                            select new DatosEncuesta
                            {
@@ -311,12 +310,16 @@ namespace EncuestasOrt.Controllers
             model.idEncuesta = idEncuestas;
             model.preguntas = Preguntas;
             model.idPlantilla = plantillaId;
+            RouteData.Values.Remove("curso");
+            RouteData.Values.Remove("fechaDesde");
+
             return View(model);
+           
 
         }
         [HttpGet]
         [Authorize]
-        public ActionResult getResultadosEncuestaLinea(IEnumerable<int> idEncuestas, IEnumerable<int> idEncuestaSegundoRango, List<Pregunta> Preguntas ,Nullable<int> Plantillaid)
+        public ActionResult getResultadosEncuestaLineaP(List<int> idEncuestas, List<int> idEncuestaSegundoRango, List<Pregunta> Preguntas ,Nullable<int> Plantillaid)
         {
             ResultadosPlantillasModel model = new ResultadosPlantillasModel();
             model.idEncuestaSegundoRango = idEncuestaSegundoRango;
@@ -328,7 +331,7 @@ namespace EncuestasOrt.Controllers
         }
         [HttpGet]
         [Authorize]
-        public ActionResult GetGraficoPreguntaLinea(IEnumerable<int> idEncuestas, IEnumerable<int> idEncuestaSegundoRango,int idPregunta, Nullable<int> Plantillaid)
+        public ActionResult GetGraficoPreguntaLineaP(IEnumerable<int> idEncuestas, IEnumerable<int> idEncuestaSegundoRango, int idPregunta, Nullable<int> Plantillaid)
         {
 
 
@@ -352,7 +355,7 @@ namespace EncuestasOrt.Controllers
             {
                 DataRow row1 = dt.NewRow();
                 row1[0] = item.Valor;
-               
+
                 var encuestarespuestas = (from p in db.EncuestaRespuesta
 
                                           join e in db.Encuesta on p.EncuestaID equals e.Id
@@ -369,10 +372,15 @@ namespace EncuestasOrt.Controllers
                 row1[1] = encuestarespuestas.Count();
                 dt.Rows.Add(row1);
             }
+            
+         
 
 
+          
+
+          
             ViewBag.idChart = idPregunta;
-            return PartialView("_PreguntaGraficoLinea", dt);
+            return PartialView("_PreguntaGraficoLineaP", dt);
 
 
         }

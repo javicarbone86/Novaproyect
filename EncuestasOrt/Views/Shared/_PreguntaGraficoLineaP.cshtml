@@ -1,0 +1,42 @@
+﻿@model DataTable
+@using System.Data
+@using Chart.Mvc.ComplexChart;
+@using Chart.Mvc.Extensions
+@{
+
+    var data = new DataTable();
+    List<double> list = new List<double>();
+    List<string> listaLabel = new List<string>();
+    foreach (DataRow row in ((DataTable)Model).Rows)
+    {
+
+        list.Add(Double.Parse(row[1].ToString()));
+        listaLabel.Add(row[0].ToString());
+
+    }
+   
+    string collapser = "chartdiv_" + ViewBag.IdChart;
+    var LineChart = new LineChart();
+    LineChart.ComplexData.Labels.AddRange(listaLabel);
+    LineChart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+        {
+            new ComplexDataset
+                {
+                    Data = list,
+                    Label = "My First dataset",
+                    FillColor = "rgba(100,100,100,0.0)",
+                    StrokeColor = "rgba(100,100,100,1)",
+                    PointColor = "rgba(100,100,100,1)",
+                    PointStrokeColor = "#fff",
+                    PointHighlightFill = "#fff",
+                    PointHighlightStroke = "rgba(100,100,100,1)",
+                }
+        });
+
+}
+
+<canvas id="chartdiv_@ViewBag.IdChart" width="400" height="400"></canvas>
+
+@Html.CreateChart(@collapser, LineChart)
+
+

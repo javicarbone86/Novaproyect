@@ -1,16 +1,18 @@
 ﻿
 @model EncuestasOrt.Models.ResultadosPlantillasModel
 <br />
+
 @Html.HiddenFor(model => Model.idPlantilla.Value, htmlAttributes: new { @id = "idPlantilla" })
+
 <input type="button" value="Grafico en Barra" onclick="return GraficoBarra()" />
 <input type="button" value="Grafico en Linea" onclick="return GraficoLinea()" />
 
 
 <div id="Barra">
-    @Html.Action("GetResultadosEncuestaBarraP", new { idEncuesta = Model.idEncuesta, idEncuestaRango = Model.idEncuestaSegundoRango, Preguntas=Model.preguntas, Plantillaid= Model.idPlantilla })
+    @*@Html.Action("GetResultadosEncuestaBarraP", new { idEncuestas = Model.idEncuesta, idEncuestaSegundoRango = Model.idEncuestaSegundoRango, Preguntas=Model.preguntas, Plantillaid= Model.idPlantilla })*@
 </div>
 <div id="Linea">
-    @Html.Action("GetResultadosEncuestaLineaP", new { idEncuesta = Model.idEncuesta, idEncuestaRango = Model.idEncuestaSegundoRango, Preguntas = Model.preguntas, Plantillaid = Model.idPlantilla })
+    @Html.Action("GetResultadosEncuestaLineaP", new { idEncuestas = Model.idEncuesta, idEncuestaSegundoRango = Model.idEncuestaSegundoRango, Preguntas = Model.preguntas, Plantillaid = Model.idPlantilla })
 </div>
 
 <script>
@@ -18,7 +20,7 @@
         $("#Barra").show();
         $("#Linea").hide();
     });
-
+    var url = window.location.hostname;
 
     GraficoBarra = function () {
         $("#Barra").show();

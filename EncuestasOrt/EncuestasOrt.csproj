@@ -1742,6 +1742,7 @@
     <Content Include="Views\Plantillas\Index.cshtml" />
     <Content Include="Views\Plantillas\Resultados.cshtml" />
     <Content Include="Views\Shared\_ResultadoEncuestaLineaP.cshtml" />
+    <Content Include="Views\Shared\_PreguntaGraficoLineaP.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
