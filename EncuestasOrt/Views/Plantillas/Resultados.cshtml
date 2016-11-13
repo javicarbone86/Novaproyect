@@ -4,32 +4,34 @@
 
 @Html.HiddenFor(model => Model.idPlantilla.Value, htmlAttributes: new { @id = "idPlantilla" })
 
-<input type="button" value="Grafico en Barra" onclick="return GraficoBarra()" />
-<input type="button" value="Grafico en Linea" onclick="return GraficoLinea()" />
+<input type="button" value="Grafico en Barra" onclick="return GraficoBarraP()" />
+<input type="button" value="Grafico en Linea" onclick="return GraficoLineaP()" />
 
 
-<div id="Barra">
-    @*@Html.Action("GetResultadosEncuestaBarraP", new { idEncuestas = Model.idEncuesta, idEncuestaSegundoRango = Model.idEncuestaSegundoRango, Preguntas=Model.preguntas, Plantillaid= Model.idPlantilla })*@
+<div id="BarraP">
+   @Html.Action("GetResultadosEncuestaBarraP", new { idEncuestas = Model.idEncuesta, idEncuestaSegundoRango = Model.idEncuestaSegundoRango, Preguntas=Model.preguntas, Plantillaid= Model.idPlantilla })
 </div>
-<div id="Linea">
+<div id="LineaP">
     @Html.Action("GetResultadosEncuestaLineaP", new { idEncuestas = Model.idEncuesta, idEncuestaSegundoRango = Model.idEncuestaSegundoRango, Preguntas = Model.preguntas, Plantillaid = Model.idPlantilla })
 </div>
 
 <script>
     $(document).ready(function () {
-        $("#Barra").show();
-        $("#Linea").hide();
+        $("#BarraP").show();
+        $("#LineaP").hide();
+        
     });
-    var url = window.location.hostname;
 
-    GraficoBarra = function () {
-        $("#Barra").show();
-        $("#Linea").hide();
+
+    GraficoBarraP = function () {
+        $("#LineaP").hide();
+        $("#BarraP").show();
+
     }
-    GraficoLinea = function () {
-
-        $("#Linea").show();
-        $("#Barra").hide();
+    GraficoLineaP = function () {
+        $("#BarraP").hide();
+        $("#LineaP").show();
+        
 
 
     }

@@ -1743,6 +1743,8 @@
     <Content Include="Views\Plantillas\Resultados.cshtml" />
     <Content Include="Views\Shared\_ResultadoEncuestaLineaP.cshtml" />
     <Content Include="Views\Shared\_PreguntaGraficoLineaP.cshtml" />
+    <Content Include="Views\Shared\_ResultadoEncuestaBarraP.cshtml" />
+    <Content Include="Views\Shared\_PreguntaGraficoBarraP.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

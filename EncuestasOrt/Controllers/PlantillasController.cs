@@ -331,6 +331,111 @@ namespace EncuestasOrt.Controllers
         }
         [HttpGet]
         [Authorize]
+        public ActionResult getResultadosEncuestaBarraP(List<int> idEncuestas, List<int> idEncuestaSegundoRango, List<Pregunta> Preguntas, Nullable<int> Plantillaid)
+        {
+            ResultadosPlantillasModel model = new ResultadosPlantillasModel();
+            model.idEncuestaSegundoRango = idEncuestaSegundoRango;
+            model.idEncuesta = idEncuestas;
+            model.preguntas = Preguntas;
+            model.idPlantilla = Plantillaid;
+            return PartialView("_ResultadoEncuestaBarraP", model);
+
+        }
+        [HttpGet]
+        [Authorize]
+        public ActionResult GetGraficoPreguntaBarraP(IEnumerable<int> idEncuestas, IEnumerable<int> idEncuestaSegundoRango, int idPregunta, Nullable<int> Plantillaid)
+        {
+
+
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("item"));
+            dt.Columns.Add(new DataColumn("cantidad"));
+
+
+            var respuestas = (from p in db.Opcion
+                              where (p.PreguntaID == idPregunta)
+                              select new
+                              {
+                                  Id = p.Id,
+                                  PreguntaID = p.PreguntaID,
+                                  Valor = p.valor,
+                                  Peso = p.PesoEstadistico
+                              }).ToList();
+
+            foreach (var item in respuestas)
+            {
+                DataRow row1 = dt.NewRow();
+                row1[0] = item.Valor;
+
+                var encuestarespuestas = (from p in db.EncuestaRespuesta
+
+                                          join e in db.Encuesta on p.EncuestaID equals e.Id
+                                          where p.OpcionID == item.Id
+                                                && idEncuestas.Contains(e.Id)
+                                          select new
+                                          {
+                                              Id = p.Id,
+                                              EncuestaID = p.EncuestaID,
+                                              PreguntaID = p.PreguntaID,
+                                              OpcionID = p.OpcionID,
+                                          }).ToList();
+
+                row1[1] = encuestarespuestas.Count();
+                dt.Rows.Add(row1);
+            }
+
+            DataTable dt2 = new DataTable();
+            dt2.Columns.Add(new DataColumn("item"));
+            dt2.Columns.Add(new DataColumn("cantidad"));
+
+
+            var respuestas2 = (from p in db.Opcion
+                               where (p.PreguntaID == idPregunta)
+                               select new
+                               {
+                                   Id = p.Id,
+                                   PreguntaID = p.PreguntaID,
+                                   Valor = p.valor,
+                                   Peso = p.PesoEstadistico
+                               }).ToList();
+
+            foreach (var item in respuestas2)
+            {
+                DataRow row2 = dt2.NewRow();
+                row2[0] = item.Valor;
+
+                var encuestarespuestas2 = (from p in db.EncuestaRespuesta
+
+                                           join e in db.Encuesta on p.EncuestaID equals e.Id
+                                           where p.OpcionID == item.Id
+                                                 && idEncuestaSegundoRango.Contains(e.Id)
+                                           select new
+                                           {
+                                               Id = p.Id,
+                                               EncuestaID = p.EncuestaID,
+                                               PreguntaID = p.PreguntaID,
+                                               OpcionID = p.OpcionID,
+                                           }).ToList();
+
+                row2[1] = encuestarespuestas2.Count();
+                dt2.Rows.Add(row2);
+            }
+
+
+
+
+
+            List<DataTable> Data = new List<DataTable>();
+            Data.Add(dt);
+            Data.Add(dt2);
+            ViewBag.idChart = idPregunta;
+            return PartialView("_PreguntaGraficoBarraP", Data);
+
+
+        }
+        [HttpGet]
+        [Authorize]
         public ActionResult GetGraficoPreguntaLineaP(IEnumerable<int> idEncuestas, IEnumerable<int> idEncuestaSegundoRango, int idPregunta, Nullable<int> Plantillaid)
         {
 
@@ -372,15 +477,53 @@ namespace EncuestasOrt.Controllers
                 row1[1] = encuestarespuestas.Count();
                 dt.Rows.Add(row1);
             }
-            
-         
+
+            DataTable dt2 = new DataTable();
+            dt2.Columns.Add(new DataColumn("item"));
+            dt2.Columns.Add(new DataColumn("cantidad"));
 
 
-          
+            var respuestas2 = (from p in db.Opcion
+                              where (p.PreguntaID == idPregunta)
+                              select new
+                              {
+                                  Id = p.Id,
+                                  PreguntaID = p.PreguntaID,
+                                  Valor = p.valor,
+                                  Peso = p.PesoEstadistico
+                              }).ToList();
 
-          
+            foreach (var item in respuestas2)
+            {
+                DataRow row2 = dt2.NewRow();
+                row2[0] = item.Valor;
+
+                var encuestarespuestas2 = (from p in db.EncuestaRespuesta
+
+                                          join e in db.Encuesta on p.EncuestaID equals e.Id
+                                          where p.OpcionID == item.Id
+                                                && idEncuestaSegundoRango.Contains(e.Id)
+                                          select new
+                                          {
+                                              Id = p.Id,
+                                              EncuestaID = p.EncuestaID,
+                                              PreguntaID = p.PreguntaID,
+                                              OpcionID = p.OpcionID,
+                                          }).ToList();
+
+                row2[1] = encuestarespuestas2.Count();
+                dt2.Rows.Add(row2);
+            }
+
+
+
+
+
+            List<DataTable> Data = new List<DataTable>();
+            Data.Add(dt);
+            Data.Add(dt2);
             ViewBag.idChart = idPregunta;
-            return PartialView("_PreguntaGraficoLineaP", dt);
+            return PartialView("_PreguntaGraficoLineaP", Data);
 
 
         }

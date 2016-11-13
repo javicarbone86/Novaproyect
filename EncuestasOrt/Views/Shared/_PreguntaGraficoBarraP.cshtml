@@ -4,9 +4,8 @@
 @using Chart.Mvc.Extensions
 @{
 
-    string collapser = "chartdiv_" + ViewBag.IdChart;
-    var LineChart = new LineChart();
-    
+    string collapser = "Chartdiv_" + ViewBag.IdChart;
+    var barChart = new BarChart();
     string FillColor = "";
     string Color = "";
     int numero = 0;
@@ -30,23 +29,23 @@
 
         }
 
-        LineChart.ComplexData.Labels.AddRange(listaLabel);
+        barChart.ComplexData.Labels.AddRange(listaLabel);
 
         if (numero > 0)
         {
 
-            FillColor = "rgba(12,132,228, 0.0)";
+            FillColor = "rgba(12,132,228, 0.5)";
             Color = "rgba(12,132,228,1)";
         }
         else {
 
-            FillColor = "rgba(100, 100, 100, 0.0)";
+            FillColor = "rgba(100, 100, 100, 0.5)";
             Color = "rgba(100,100,100,1)";
         }
 
 
 
-        LineChart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+        barChart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
         {
             new ComplexDataset
                 {
@@ -70,8 +69,8 @@
 
 }
 
-<canvas id="chartdiv_@ViewBag.IdChart" width="400" height="400"></canvas>
+<canvas id="Chartdiv_@ViewBag.IdChart" width="400" height="400"></canvas>
 
-@Html.CreateChart(@collapser, LineChart)
+@Html.CreateChart(@collapser, barChart)
 
 
