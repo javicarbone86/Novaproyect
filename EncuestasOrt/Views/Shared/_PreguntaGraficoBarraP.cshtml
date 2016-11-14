@@ -1,0 +1,76 @@
+﻿@model List<DataTable>
+@using System.Data
+@using Chart.Mvc.ComplexChart;
+@using Chart.Mvc.Extensions
+@{
+
+    string collapser = "Chartdiv_" + ViewBag.IdChart;
+    var barChart = new BarChart();
+    string FillColor = "";
+    string Color = "";
+    int numero = 0;
+
+    var data = ((List<DataTable>)Model);
+    foreach (var item in data)
+    {
+
+        List<double> list = new List<double>();
+        List<string> listaLabel = new List<string>();
+
+
+        foreach (DataRow row in ((DataTable)item).Rows)
+        {
+
+            list.Add(Double.Parse(row[1].ToString()));
+            if (numero == 0)
+            {
+                listaLabel.Add(row[0].ToString());
+            }
+
+        }
+
+        barChart.ComplexData.Labels.AddRange(listaLabel);
+
+        if (numero > 0)
+        {
+
+            FillColor = "rgba(12,132,228, 0.5)";
+            Color = "rgba(12,132,228,1)";
+        }
+        else {
+
+            FillColor = "rgba(100, 100, 100, 0.5)";
+            Color = "rgba(100,100,100,1)";
+        }
+
+
+
+        barChart.ComplexData.Datasets.AddRange(new List<ComplexDataset>
+        {
+            new ComplexDataset
+                {
+                    Data = list,
+                    Label = numero.ToString(),
+                    FillColor = FillColor,
+                    StrokeColor = Color,
+                    PointColor = Color,
+                    PointStrokeColor = "#fff",
+                    PointHighlightFill = "#fff",
+                    PointHighlightStroke = Color,
+                }
+        });
+        numero++;
+
+    }
+
+
+
+
+
+}
+
+<canvas id="Chartdiv_@ViewBag.IdChart" width="400" height="400"></canvas>
+
+@Html.CreateChart(@collapser, barChart)
+
+
