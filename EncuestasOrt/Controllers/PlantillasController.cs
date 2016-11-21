@@ -310,8 +310,36 @@ namespace EncuestasOrt.Controllers
             model.idEncuesta = idEncuestas;
             model.preguntas = Preguntas;
             model.idPlantilla = plantillaId;
+            if (fechaDesde == null || fechaHasta == null)
+            {
+                model.PrimerRango = "";
+            }
+            else {
+
+
+                model.PrimerRango = fechaDesde.Value.ToShortDateString() + " - " + fechaHasta.Value.ToShortDateString();
+
+            }
+            if (fechaRangoDesde == null || fechaRangoHasta == null)
+            {
+                model.SegundoRango = "";
+            }
+            else {
+
+                model.SegundoRango = fechaRangoDesde.Value.ToShortDateString() + " - " + fechaRangoHasta.Value.ToShortDateString();
+
+            }
+
+          
+                         
+
+               
+                
+            
+            
             RouteData.Values.Remove("curso");
             RouteData.Values.Remove("fechaDesde");
+            
 
             return View(model);
            
