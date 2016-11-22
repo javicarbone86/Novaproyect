@@ -11,6 +11,8 @@ namespace EncuestasOrt.Models
         public List<int> idEncuesta { set; get; }
         public IEnumerable<EncuestasOrt.Pregunta> preguntas { set; get; }
         public Nullable<int> idPlantilla { set; get; }
+        public string PrimerRango { set; get; }
+        public string SegundoRango { set; get; }
     }
 
     public class ResultadosGModel

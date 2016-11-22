@@ -6,7 +6,11 @@
 
 <input type="button" value="Grafico en Barra" onclick="return GraficoBarraP()" />
 <input type="button" value="Grafico en Linea" onclick="return GraficoLineaP()" />
-
+<label >Primer Rango:</label>
+<label >@Model.PrimerRango </label>
+<label> |</label>
+<label >Segundo Rango:</label>
+<label >@Model.SegundoRango</label>
 
 <div id="BarraP">
    @Html.Action("GetResultadosEncuestaBarraP", new { idEncuestas = Model.idEncuesta, idEncuestaSegundoRango = Model.idEncuestaSegundoRango, Preguntas=Model.preguntas, Plantillaid= Model.idPlantilla })
